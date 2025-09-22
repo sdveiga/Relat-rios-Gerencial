@@ -1,7 +1,6 @@
 import streamlit as st
 import base64
 import os
-import streamlit.components.v1 as components
 
 # 🔧 Oculta barra superior e rodapé do Streamlit
 st.markdown("""
@@ -10,6 +9,7 @@ st.markdown("""
     header {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
+
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -125,24 +125,6 @@ else:
         st.markdown(f"**Data de Admissão:** {dados['admissao']}")
         st.markdown(f"**Funcionários Abaixo:** {dados['funcionarios']}")
 
-    # 🔑 Atalho de teclado Ctrl + M para destacar o menu lateral
-    components.html("""
-    <script>
-    document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey && e.key === 'm') {
-            const sidebar = window.parent.document.querySelector('section[data-testid="stSidebar"]');
-            if (sidebar) {
-                sidebar.scrollIntoView({ behavior: 'smooth' });
-                sidebar.style.boxShadow = '0 0 10px 3px #00FF00';
-                setTimeout(() => {
-                    sidebar.style.boxShadow = '';
-                }, 1000);
-            }
-        }
-    });
-    </script>
-    """, height=0)
-
     # 📁 Menu lateral sempre visível
     st.sidebar.markdown("## 📁 Relatórios Disponíveis")
 
@@ -151,6 +133,19 @@ else:
             "📈 Hierarquia": "Hierarquia",
             "🎓 Certificado": "Certificado",
             "🚌 LOG VT": "LOG VT",
+            "⚙️ Eficiência": "Eficiência",
+            "📊 Produtividade": "Produtividade",
+            "🏅 Pontuação": "Pontuação",
+            "🧩 MESH": "MESH",
+            "🧭 Rota Inicial": "Rota Inicial",
+            "🚩 Rota Final": "Rota Final"
+        },
+        "💰 Financeiro": {
+            "🏗️ Faturamento Instalação": "Faturamento Instalação",
+            "🔧 Faturamento Manutenção": "Faturamento Manutenção",
+            "💸 Desconto de revisita": "Desconto de revisita",
+            "🏢 Faturamento MDU": "Faturamento MDU",
+            "🛒 Faturamento Vendas": "Faturamento Vendas"
             } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
         "⚙️ Processos Operacionais": {
             "📝 Realizar IVM": "Realizar IVM",
@@ -186,4 +181,6 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
+
 
