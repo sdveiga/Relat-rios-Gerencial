@@ -3,23 +3,19 @@ import base64
 import os
 
 # 🔧 Oculta barra superior e rodapé do Streamlit
-hide_streamlit_style = """
+st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     </style>
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
+""", unsafe_allow_html=True)
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
     with open(png_file, "rb") as f:
-        data = f.read()
-    encoded = base64.b64encode(data).decode()
-    st.markdown(
-        f"""
+        encoded = base64.b64encode(f.read()).decode()
+    st.markdown(f"""
         <style>
         .stApp {{
             background-image: url("data:image/png;base64,{encoded}");
@@ -27,9 +23,7 @@ def set_background(png_file):
             background-position: center;
             color: white;
         }}
-        label {{
-            color: white !important;
-        }}
+        label {{ color: white !important; }}
         div.stButton > button:first-child {{
             background-color: #808080;
             color: white;
@@ -41,23 +35,17 @@ def set_background(png_file):
             background-color: #696969;
         }}
         </style>
-        """,
-        unsafe_allow_html=True
-    )
+    """, unsafe_allow_html=True)
 
 # 🖼️ Função para exibir logo
 def show_logo(png_file):
     with open(png_file, "rb") as f:
-        data = f.read()
-    encoded = base64.b64encode(data).decode()
-    st.markdown(
-        f"""
+        encoded = base64.b64encode(f.read()).decode()
+    st.markdown(f"""
         <div style="position: absolute; top: 10px; right: 10px; z-index: 100;">
             <img src="data:image/png;base64,{encoded}" width="150">
         </div>
-        """,
-        unsafe_allow_html=True
-    )
+    """, unsafe_allow_html=True)
 
 # 🖼️ Função para exibir foto do usuário
 def exibir_foto(caminho):
@@ -157,46 +145,40 @@ else:
             "🔧 Faturamento Manutenção": "Faturamento Manutenção",
             "💸 Desconto de revisita": "Desconto de revisita",
             "🏢 Faturamento MDU": "Faturamento MDU",
-            "🛒 Faturamento Vendas": "Faturamento Vendas",
-            "👷 Produção por equipe": "Produção por equipe"
+            "🛒 Faturamento Vendas": "Faturamento Vendas"
         } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
         "⚙️ Processos Operacionais": {
-        "📝 Realizar IVM": "Realizar IVM",
-        "🚨 Processo disciplinar": "Processo disciplinar"
+            "📝 Realizar IVM": "Realizar IVM",
+            "🚨 Processo disciplinar": "Processo disciplinar"
+        }
     }
-}
 
-# 🔘 Lista única de opções
-opcoes = []
-for categoria, itens in relatorios.items():
-    if itens:
-        opcoes.append(f"— {categoria} —")
-        for label, chave in itens.items():
-            opcoes.append(label)
+    # 🔘 Lista única de opções
+    opcoes = []
+    for categoria, itens in relatorios.items():
+        if itens:
+            opcoes.append(f"— {categoria} —")
+            for label, chave in itens.items():
+                opcoes.append(label)
 
-# 🔘 Seleção única
-selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
+    # 🔘 Seleção única
+    selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
 
-# 🔍 Mapeia o item selecionado para a chave do relatório
-for categoria, itens in relatorios.items():
-    if selecionado_label in itens:
-        selecionado = itens[selecionado_label]
-        break
-else:
-    selecionado = "geral"
+    # 🔍 Mapeia o item selecionado para a chave do relatório
+    for categoria, itens in relatorios.items():
+        if selecionado_label in itens:
+            selecionado = itens[selecionado_label]
+            break
+    else:
+        selecionado = "geral"
 
-# 📈 Exibe o relatório correspondente
-st.markdown(f"### 📊 Relatório: {selecionado}")
-st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+    # 📈 Exibe o relatório correspondente
+    st.markdown(f"### 📊 Relatório: {selecionado}")
+    st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
 
-# 🚪 Botão de logout
-st.sidebar.markdown("---")
-if st.sidebar.button("🔒 Sair"):
-    st.session_state.logado = False
-    st.experimental_rerun()
-
-
-
-
-
-
+    # 🚪 Botão de logout
+    st.sidebar.markdown("---")
+    if st.sidebar.button("🔒 Sair"):
+        st.session_state.logado = False
+        st.experimental_rerun()
+    
