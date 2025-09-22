@@ -5,7 +5,7 @@ import os
 # 🔧 Oculta barra superior e rodapé do Streamlit
 st.markdown("""
     <style>
-    #MainMenu {visibility: hidden;}
+  
     footer {visibility: hidden;}
     header {visibility: hidden;}
     </style>
@@ -182,3 +182,4 @@ else:
         st.session_state.logado = False
         st.experimental_rerun()
     
+
