@@ -147,7 +147,7 @@ else:
                 "🧩 MESH": "MESH",
                 "🧭 Rota Inicial": "Rota Inicial",
                 "🚩 Rota Final": "Rota Final"
-            },
+            
                    }
 
         opcoes = []
@@ -178,5 +178,6 @@ else:
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
     
+
 
 
