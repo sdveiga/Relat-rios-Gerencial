@@ -93,9 +93,6 @@ show_logo("icones/LOGO_MVVS_COLOR.png")
 if "logado" not in st.session_state:
     st.session_state.logado = False
 
-if "menu_visivel" not in st.session_state:
-    st.session_state.menu_visivel = True
-
 # 🔐 Tela de login
 if not st.session_state.logado:
     st.markdown("<h1 style='text-align: center;'>PAINEL GERENCIAL</h1>", unsafe_allow_html=True)
@@ -127,70 +124,59 @@ else:
         st.markdown(f"**Data de Admissão:** {dados['admissao']}")
         st.markdown(f"**Funcionários Abaixo:** {dados['funcionarios']}")
 
-    # 🔘 Botões para mostrar/ocultar menu
-    if st.session_state.menu_visivel:
-        if st.button("📁 Mostrar Menu Lateral"):
-            st.session_state.menu_visivel = True
-    else:
-        if st.button("📁 Mostrar Menu Lateral"):
-            st.session_state.menu_visivel = True
+    # 📁 Menu lateral sempre visível
+    st.sidebar.markdown("## 📁 Relatórios Disponíveis")
 
-    # 📁 Menu lateral condicional
-    if st.session_state.menu_visivel:
-        st.sidebar.markdown("## 📁 Relatórios Disponíveis")
-
-        
-        relatorios = {
-            "📊 Indicadores": {
-                "📈 Hierarquia": "Hierarquia",
-                "🎓 Certificado": "Certificado",
-                "🚌 LOG VT": "LOG VT",
-                "⚙️ Eficiência": "Eficiência",
-                "📊 Produtividade": "Produtividade",
-                "🏅 Pontuação": "Pontuação",
-                "🧩 MESH": "MESH",
-                "🧭 Rota Inicial": "Rota Inicial",
-                "🚩 Rota Final": "Rota Final"
-            },
-            "💰 Financeiro": {
-                "🏗️ Faturamento Instalação": "Faturamento Instalação",
-                "🔧 Faturamento Manutenção": "Faturamento Manutenção",
-                "💸 Desconto de revisita": "Desconto de revisita",
-                "🏢 Faturamento MDU": "Faturamento MDU",
-                "🛒 Faturamento Vendas": "Faturamento Vendas"
+    relatorios = {
+        "📊 Indicadores": {
+            "📈 Hierarquia": "Hierarquia",
+            "🎓 Certificado": "Certificado",
+            "🚌 LOG VT": "LOG VT",
+            "⚙️ Eficiência": "Eficiência",
+            "📊 Produtividade": "Produtividade",
+            "🏅 Pontuação": "Pontuação",
+            "🧩 MESH": "MESH",
+            "🧭 Rota Inicial": "Rota Inicial",
+            "🚩 Rota Final": "Rota Final"
+        },
+        "💰 Financeiro": {
+            "🏗️ Faturamento Instalação": "Faturamento Instalação",
+            "🔧 Faturamento Manutenção": "Faturamento Manutenção",
+            "💸 Desconto de revisita": "Desconto de revisita",
+            "🏢 Faturamento MDU": "Faturamento MDU",
+            "🛒 Faturamento Vendas": "Faturamento Vendas"
             } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
-            "⚙️ Processos Operacionais": {
-                "📝 Realizar IVM": "Realizar IVM",
-                "🚨 Processo disciplinar": "Processo disciplinar"
-            }
+        "⚙️ Processos Operacionais": {
+            "📝 Realizar IVM": "Realizar IVM",
+            "🚨 Processo disciplinar": "Processo disciplinar"
         }
+    }
 
-        opcoes = []
-        for categoria, itens in relatorios.items():
-            if itens:
-                opcoes.append(f"— {categoria} —")
-                for label, chave in itens.items():
-                    opcoes.append(label)
+    # 🔘 Lista única de opções
+    opcoes = []
+    for categoria, itens in relatorios.items():
+        if itens:
+            opcoes.append(f"— {categoria} —")
+            for label, chave in itens.items():
+                opcoes.append(label)
 
-        selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
+    # 🔘 Seleção única
+    selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
 
-        for categoria, itens in relatorios.items():
-            if selecionado_label in itens:
-                selecionado = itens[selecionado_label]
-                break
-        else:
-            selecionado = "geral"
-
-        st.sidebar.markdown("---")
-        if st.sidebar.button("🔒 Sair"):
-            st.session_state.logado = False
-            st.experimental_rerun()
+    # 🔍 Mapeia o item selecionado para a chave do relatório
+    for categoria, itens in relatorios.items():
+        if selecionado_label in itens:
+            selecionado = itens[selecionado_label]
+            break
     else:
-        # Se o menu estiver oculto, exibe o relatório padrão
         selecionado = "geral"
 
     # 📈 Exibe o relatório correspondente
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
 
-
+    # 🚪 Botão de logout
+    st.sidebar.markdown("---")
+    if st.sidebar.button("🔒 Sair"):
+        st.session_state.logado = False
+        st.experimental_rerun()
