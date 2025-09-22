@@ -139,7 +139,8 @@ else:
     if st.session_state.menu_visivel:
         st.sidebar.markdown("## 📁 Relatórios Disponíveis")
 
-                relatorios = {
+        
+        relatorios = {
             "📊 Indicadores": {
                 "📈 Hierarquia": "Hierarquia",
                 "🎓 Certificado": "Certificado",
