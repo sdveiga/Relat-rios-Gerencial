@@ -53,7 +53,7 @@ def exibir_foto(caminho):
     if os.path.exists(caminho):
         st.image(caminho, width=150)
     else:
-        st.image("C:/Users/Samuel/OneDrive - mvvs.com.br/Documentos/icones/padrao.png", width=150)
+        st.image("icones/padrao.png", width=150)
 
 # 👥 Usuários simulados
 usuarios = {
@@ -68,7 +68,7 @@ usuarios = {
 # 🔗 Relatórios Power BI simulados
 powerbi_links = {
     "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiHIERARQUIA_ID",
-    "Certificado": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9",
+    "Certificado": "https://app.powerbi.com/view?r=eyJrIjoiCERTIFICADO_ID",
     "LOG VT": "https://app.powerbi.com/view?r=eyJrIjoiLOGVT_ID",
     "Eficiência": "https://app.powerbi.com/view?r=eyJrIjoiEFICIENCIA_ID",
     "Produtividade": "https://app.powerbi.com/view?r=eyJrIjoiPRODUTIVIDADE_ID",
@@ -88,8 +88,8 @@ powerbi_links = {
 }
 
 # 🎨 Fundo e logo
-set_background("C:/Users/Samuel/OneDrive - mvvs.com.br/Documentos/icones/Painel_power_point.png")
-show_logo("C:/Users/Samuel/OneDrive - mvvs.com.br/Documentos/icones/LOGO_MVVS_COLOR.png")
+set_background("icones/Painel_power_point.png")
+show_logo("icones/LOGO_MVVS_COLOR.png")
 
 # 🔐 Controle de sessão
 if "logado" not in st.session_state:
@@ -117,7 +117,7 @@ else:
 
     col1, col2 = st.columns([1, 3])
     with col1:
-        exibir_foto(f"C:/Users/Samuel/OneDrive - mvvs.com.br/Documentos/icones/{dados['foto']}")
+        exibir_foto(f"icones/{dados['foto']}")
         st.success(f"✅ Bem-vindo, {nome}!")
 
     with col2:
@@ -150,36 +150,36 @@ else:
             "👷 Produção por equipe": "Produção por equipe"
         } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
         "⚙️ Processos Operacionais": {
-            "📝 Realizar IVM": "Realizar IVM",
-            "🚨 Processo disciplinar": "Processo disciplinar"
-        }
+        "📝 Realizar IVM": "Realizar IVM",
+        "🚨 Processo disciplinar": "Processo disciplinar"
     }
+}
 
-    # 🔘 Lista única de opções
-    opcoes = []
-    for categoria, itens in relatorios.items():
-        if itens:
-            opcoes.append(f"— {categoria} —")
-            for label, chave in itens.items():
-                opcoes.append(label)
+# 🔘 Lista única de opções
+opcoes = []
+for categoria, itens in relatorios.items():
+    if itens:
+        opcoes.append(f"— {categoria} —")
+        for label, chave in itens.items():
+            opcoes.append(label)
 
-    # 🔘 Seleção única
-    selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
+# 🔘 Seleção única
+selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
 
-    # 🔍 Mapeia o item selecionado para a chave do relatório
-    for categoria, itens in relatorios.items():
-        if selecionado_label in itens:
-            selecionado = itens[selecionado_label]
-            break
-    else:
-        selecionado = "geral"
+# 🔍 Mapeia o item selecionado para a chave do relatório
+for categoria, itens in relatorios.items():
+    if selecionado_label in itens:
+        selecionado = itens[selecionado_label]
+        break
+else:
+    selecionado = "geral"
 
-    # 📈 Exibe o relatório correspondente
-    st.markdown(f"### 📊 Relatório: {selecionado}")
-    st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+# 📈 Exibe o relatório correspondente
+st.markdown(f"### 📊 Relatório: {selecionado}")
+st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
 
-    # 🚪 Botão de logout
-    st.sidebar.markdown("---")
-    if st.sidebar.button("🔒 Sair"):
-        st.session_state.logado = False
-        st.experimental_rerun()
+# 🚪 Botão de logout
+st.sidebar.markdown("---")
+if st.sidebar.button("🔒 Sair"):
+    st.session_state.logado = False
+    st.experimental_rerun()
