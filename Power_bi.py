@@ -2,13 +2,7 @@ import streamlit as st
 import base64
 import os
 
-# 🔧 Oculta barra superior e rodapé do Streamlit
-st.markdown("""
-    <style>
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    </style>
-""", unsafe_allow_html=True)
+
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -180,3 +174,4 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
