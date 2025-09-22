@@ -84,7 +84,7 @@ powerbi_links = {
     "Produção por equipe": "https://app.powerbi.com/view?r=eyJrIjoiPROD_EQUIPE_ID",
     "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
     "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID",
-    "geral": "https://app.powerbi.com/view?r=eyJrIjoiGERAL_ID"
+    "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
 }
 
 # 🎨 Fundo e logo
@@ -183,3 +183,4 @@ st.sidebar.markdown("---")
 if st.sidebar.button("🔒 Sair"):
     st.session_state.logado = False
     st.experimental_rerun()
+
