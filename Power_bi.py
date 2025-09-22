@@ -150,7 +150,7 @@ else:
         "📊 Indicadores": {
             "📈 Hierarquia": "Hierarquia",
             "🎓 Certificado": "Certificado",
-            "🚌 LOG VT": "LOG VT
+            "🚌 LOG VT": "LOG VT",
             } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
         "⚙️ Processos Operacionais": {
             "📝 Realizar IVM": "Realizar IVM",
@@ -186,3 +186,4 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
