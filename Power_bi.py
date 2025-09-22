@@ -67,7 +67,7 @@ usuarios = {
 
 # 🔗 Relatórios Power BI simulados
 powerbi_links = {
-    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiHIERARQUIA_ID",
+    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9",
     "Certificado": "https://app.powerbi.com/view?r=eyJrIjoiCERTIFICADO_ID",
     "LOG VT": "https://app.powerbi.com/view?r=eyJrIjoiLOGVT_ID",
     "Eficiência": "https://app.powerbi.com/view?r=eyJrIjoiEFICIENCIA_ID",
@@ -84,7 +84,7 @@ powerbi_links = {
     "Produção por equipe": "https://app.powerbi.com/view?r=eyJrIjoiPROD_EQUIPE_ID",
     "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
     "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID",
-    "geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
+    ""geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
 }
 
 # 🎨 Fundo e logo
@@ -183,5 +183,6 @@ st.sidebar.markdown("---")
 if st.sidebar.button("🔒 Sair"):
     st.session_state.logado = False
     st.experimental_rerun()
+
 
 
