@@ -5,7 +5,6 @@ import os
 # 🔧 Oculta barra superior e rodapé do Streamlit
 st.markdown("""
     <style>
-  
     footer {visibility: hidden;}
     header {visibility: hidden;}
     </style>
@@ -94,6 +93,9 @@ show_logo("icones/LOGO_MVVS_COLOR.png")
 if "logado" not in st.session_state:
     st.session_state.logado = False
 
+if "menu_ocultado" not in st.session_state:
+    st.session_state.menu_ocultado = False
+
 # 🔐 Tela de login
 if not st.session_state.logado:
     st.markdown("<h1 style='text-align: center;'>PAINEL GERENCIAL</h1>", unsafe_allow_html=True)
@@ -125,61 +127,56 @@ else:
         st.markdown(f"**Data de Admissão:** {dados['admissao']}")
         st.markdown(f"**Funcionários Abaixo:** {dados['funcionarios']}")
 
-    # 📁 Menu lateral unificado
-    st.sidebar.markdown("## 📁 Relatórios Disponíveis")
+    # 🔘 Botão para ocultar menu (irreversível)
+    if not st.session_state.menu_ocultado:
+        if st.button("❌ Ocultar Menu Lateral"):
+            st.session_state.menu_ocultado = True
 
-    relatorios = {
-        "📊 Indicadores": {
-            "📈 Hierarquia": "Hierarquia",
-            "🎓 Certificado": "Certificado",
-            "🚌 LOG VT": "LOG VT",
-            "⚙️ Eficiência": "Eficiência",
-            "📊 Produtividade": "Produtividade",
-            "🏅 Pontuação": "Pontuação",
-            "🧩 MESH": "MESH",
-            "🧭 Rota Inicial": "Rota Inicial",
-            "🚩 Rota Final": "Rota Final"
-        },
-        "💰 Financeiro": {
-            "🏗️ Faturamento Instalação": "Faturamento Instalação",
-            "🔧 Faturamento Manutenção": "Faturamento Manutenção",
-            "💸 Desconto de revisita": "Desconto de revisita",
-            "🏢 Faturamento MDU": "Faturamento MDU",
-            "🛒 Faturamento Vendas": "Faturamento Vendas"
-        } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
-        "⚙️ Processos Operacionais": {
-            "📝 Realizar IVM": "Realizar IVM",
-            "🚨 Processo disciplinar": "Processo disciplinar"
-        }
-    }
+    # 📁 Menu lateral condicional
+    if not st.session_state.menu_ocultado:
+        st.sidebar.markdown("## 📁 Relatórios Disponíveis")
 
-    # 🔘 Lista única de opções
-    opcoes = []
-    for categoria, itens in relatorios.items():
-        if itens:
-            opcoes.append(f"— {categoria} —")
-            for label, chave in itens.items():
-                opcoes.append(label)
+        relatorios = {
+            "📊 Indicadores": {
+                "📈 Hierarquia": "Hierarquia",
+                "🎓 Certificado": "Certificado",
+                "🚌 LOG VT": "LOG VT",
+                "⚙️ Eficiência": "Eficiência",
+                "📊 Produtividade": "Produtividade",
+                "🏅 Pontuação": "Pontuação",
+                "🧩 MESH": "MESH",
+                "🧭 Rota Inicial": "Rota Inicial",
+                "🚩 Rota Final": "Rota Final"
+            },
+                   }
 
-    # 🔘 Seleção única
-    selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
+        opcoes = []
+        for categoria, itens in relatorios.items():
+            if itens:
+                opcoes.append(f"— {categoria} —")
+                for label, chave in itens.items():
+                    opcoes.append(label)
 
-    # 🔍 Mapeia o item selecionado para a chave do relatório
-    for categoria, itens in relatorios.items():
-        if selecionado_label in itens:
-            selecionado = itens[selecionado_label]
-            break
+        selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
+
+        for categoria, itens in relatorios.items():
+            if selecionado_label in itens:
+                selecionado = itens[selecionado_label]
+                break
+        else:
+            selecionado = "geral"
+
+        st.sidebar.markdown("---")
+        if st.sidebar.button("🔒 Sair"):
+            st.session_state.logado = False
+            st.experimental_rerun()
     else:
+        # Se o menu foi ocultado, exibe o relatório padrão
         selecionado = "geral"
 
     # 📈 Exibe o relatório correspondente
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
-
-    # 🚪 Botão de logout
-    st.sidebar.markdown("---")
-    if st.sidebar.button("🔒 Sair"):
-        st.session_state.logado = False
-        st.experimental_rerun()
     
+
 
