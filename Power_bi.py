@@ -130,7 +130,7 @@ else:
     # 🔘 Botões para mostrar/ocultar menu
     if st.session_state.menu_visivel:
         if st.button("❌ Ocultar Menu Lateral"):
-            st.session_state.menu_visivel = False
+            st.session_state.menu_visivel = True
     else:
         if st.button("📁 Mostrar Menu Lateral"):
             st.session_state.menu_visivel = True
@@ -192,3 +192,4 @@ else:
     # 📈 Exibe o relatório correspondente
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
