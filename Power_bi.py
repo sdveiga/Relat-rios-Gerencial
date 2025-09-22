@@ -53,7 +53,7 @@ def exibir_foto(caminho):
     if os.path.exists(caminho):
         st.image(caminho, width=150)
     else:
-        st.image("Imagens/padrao.png", width=150)
+        st.image("icones/padrao.png", width=150)
 
 # 👥 Usuários simulados
 usuarios = {
@@ -88,8 +88,8 @@ powerbi_links = {
 }
 
 # 🎨 Fundo e logo
-set_background("Imagens/Painel_power_point.png")
-show_logo("Imagens/LOGO_MVVS_COLOR.png")
+set_background("icones/Painel_power_point.png")
+show_logo("icones/LOGO_MVVS_COLOR.png")
 
 # 🔐 Controle de sessão
 if "logado" not in st.session_state:
@@ -117,7 +117,7 @@ else:
 
     col1, col2 = st.columns([1, 3])
     with col1:
-        exibir_foto(f"imagens/{dados['foto']}")
+        exibir_foto(f"icones/{dados['foto']}")
         st.success(f"✅ Bem-vindo, {nome}!")
 
     with col2:
@@ -183,4 +183,3 @@ st.sidebar.markdown("---")
 if st.sidebar.button("🔒 Sair"):
     st.session_state.logado = False
     st.experimental_rerun()
-
