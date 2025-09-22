@@ -1,4 +1,13 @@
 import streamlit as st
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 import base64
 import os
 
@@ -183,6 +192,7 @@ st.sidebar.markdown("---")
 if st.sidebar.button("🔒 Sair"):
     st.session_state.logado = False
     st.experimental_rerun()
+
 
 
 
