@@ -2,54 +2,14 @@ import streamlit as st
 import base64
 import os
 
-# 🔧 Estilos personalizados
+# 🔧 Oculta barra superior e rodapé do Streamlit
 st.markdown("""
     <style>
-    footer, header {visibility: hidden;}
-    .menu-container {
-        position: fixed;
-        top: 80px;
-        left: 0;
-        width: 220px;
-        height: calc(100% - 100px);
-        background-color: rgba(0,0,0,0.6);
-        padding: 20px;
-        overflow-y: auto;
-        z-index: 99;
-        color: white;
-    }
-    .menu-container h3 {
-        margin-top: 0;
-        color: #fff;
-        font-size: 20px;
-    }
-    .menu-container button {
-        width: 100%;
-        margin: 5px 0;
-        background-color: #444;
-        color: white !important;
-        border: none;
-        padding: 10px;
-        border-radius: 5px;
-        text-align: left;
-        font-weight: bold;
-        cursor: pointer;
-    }
-    .menu-container button:hover {
-        background-color: #666;
-    }
-    .main-content {
-        margin-left: 240px;
-        padding: 20px;
-    }
-    .logout-button {
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        z-index: 100;
-    }
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
+
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -64,6 +24,16 @@ def set_background(png_file):
             color: white;
         }}
         label {{ color: white !important; }}
+        div.stButton > button:first-child {{
+            background-color: #808080;
+            color: white;
+            border: none;
+            padding: 0.5em 1em;
+            border-radius: 5px;
+        }}
+        div.stButton > button:first-child:hover {{
+            background-color: #696969;
+        }}
         </style>
     """, unsafe_allow_html=True)
 
@@ -86,32 +56,34 @@ def exibir_foto(caminho):
 
 # 👥 Usuários simulados
 usuarios = {
-    "gerente_user": {
-        "senha": "789",
-        "cargo": "GESTOR TI",
-        "nome": "Samuel David Veiga",
-        "foto": "gerente.png",
-        "admissao": "10/07/2023",
-        "funcionarios": 330
-    }
+    "ceo_user": {"senha": "123", "cargo": "CEO", "nome": "Carlos", "foto": "ceo.png", "admissao": "01/01/2015", "funcionarios": 120},
+    "diretor_user": {"senha": "456", "cargo": "DIRETOR", "nome": "Fernanda", "foto": "diretor.png", "admissao": "15/03/2016", "funcionarios": 80},
+    "gerente_user": {"senha": "789", "cargo": "GERENTE", "nome": "Samuel David Veiga", "foto": "gerente.png", "admissao": "01/07/2008", "funcionarios": 360},
+    "coord_user": {"senha": "abc", "cargo": "COORDENADOR", "nome": "Luciana", "foto": "coord.png", "admissao": "20/09/2019", "funcionarios": 15},
+    "sup_user": {"senha": "def", "cargo": "SUPERVISOR", "nome": "Rafael", "foto": "sup.png", "admissao": "05/11/2020", "funcionarios": 8},
+    "cop_user": {"senha": "ghi", "cargo": "OPERADOR COP", "nome": "Ana", "foto": "cop.png", "admissao": "12/01/2022", "funcionarios": 0},
 }
 
-# 🔗 Relatórios simulados
+# 🔗 Relatórios Power BI simulados
 powerbi_links = {
-    "Indicadores": "https://app.powerbi.com/view?r=eyJrIjoiINDICADORES_ID",
-    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiHIERARQUIA_ID",
-    "Conectividade": "https://app.powerbi.com/view?r=eyJrIjoiCONECTIVIDADE_ID",
-    "LOG IVTI": "https://app.powerbi.com/view?r=eyJrIjoiLOGIVTI_ID",
+    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9",
+    "Certificado": "https://app.powerbi.com/view?r=eyJrIjoiCERTIFICADO_ID",
+    "LOG VT": "https://app.powerbi.com/view?r=eyJrIjoiLOGVT_ID",
     "Eficiência": "https://app.powerbi.com/view?r=eyJrIjoiEFICIENCIA_ID",
     "Produtividade": "https://app.powerbi.com/view?r=eyJrIjoiPRODUTIVIDADE_ID",
-    "Monitoramento": "https://app.powerbi.com/view?r=eyJrIjoiMONITORAMENTO_ID",
+    "Pontuação": "https://app.powerbi.com/view?r=eyJrIjoiPONTUACAO_ID",
     "MESH": "https://app.powerbi.com/view?r=eyJrIjoiMESH_ID",
-    "Rota Inicial": "https://app.powerbi.com/view?r=eyJrIjoiROTAINICIAL_ID",
-    "Rota Final": "https://app.powerbi.com/view?r=eyJrIjoiROTAFINAL_ID",
-    "Financeiro": "https://app.powerbi.com/view?r=eyJrIjoiFINANCEIRO_ID",
-    "Faturamento": "https://app.powerbi.com/view?r=eyJrIjoiFATURAMENTO_ID",
-    "Instalação": "https://app.powerbi.com/view?r=eyJrIjoiINSTALACAO_ID",
-    "Faturamento novo": "https://app.powerbi.com/view?r=eyJrIjoiFATNOVO_ID"
+    "Rota Inicial": "https://app.powerbi.com/view?r=eyJrIjoiROTA_INICIAL_ID",
+    "Rota Final": "https://app.powerbi.com/view?r=eyJrIjoiROTA_FINAL_ID",
+    "Faturamento Instalação": "https://app.powerbi.com/view?r=eyJrIjoiFAT_INST_ID",
+    "Faturamento Manutenção": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MAN_ID",
+    "Desconto de revisita": "https://app.powerbi.com/view?r=eyJrIjoiDESCONTO_ID",
+    "Faturamento MDU": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MDU_ID",
+    "Faturamento Vendas": "https://app.powerbi.com/view?r=eyJrIjoiFAT_VENDAS_ID",
+    "Produção por equipe": "https://app.powerbi.com/view?r=eyJrIjoiPROD_EQUIPE_ID",
+    "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
+    "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID",
+    "geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
 }
 
 # 🎨 Fundo e logo
@@ -139,43 +111,73 @@ if not st.session_state.logado:
 # 👤 Página após login
 else:
     dados = usuarios[st.session_state.usuario]
-    nome = dados["nome"]
     cargo = dados["cargo"]
+    nome = dados["nome"]
 
-    # 🧍 Informações do usuário
-    col1, col2 = st.columns([1, 2])
+    col1, col2 = st.columns([1, 3])
     with col1:
         exibir_foto(f"icones/{dados['foto']}")
-        st.markdown(f"<div style='margin-top: 10px; font-size: 18px;'>✅ Bem-vindo, <strong>{nome}</strong>!</div>", unsafe_allow_html=True)
+        st.success(f"✅ Bem-vindo, {nome}!")
 
     with col2:
-        st.markdown(f"""
-            <div style='line-height: 2; font-size: 16px;'>
-                <strong>Nome:</strong> {nome}<br>
-                <strong>Cargo:</strong> {cargo}<br>
-                <strong>Data de Admissão:</strong> {dados['admissao']}<br>
-                <strong>Funcionários na área:</strong> {dados['funcionarios']}
-            </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"**Nome:** {nome}")
+        st.markdown(f"**Cargo:** {cargo}")
+        st.markdown(f"**Data de Admissão:** {dados['admissao']}")
+        st.markdown(f"**Funcionários Abaixo:** {dados['funcionarios']}")
 
-    # 📁 Menu lateral fixo
-    st.markdown("<div class='menu-container'><h3>📁 Relatórios</h3>", unsafe_allow_html=True)
-    for nome_relatorio in powerbi_links.keys():
-        if st.button(nome_relatorio, key=nome_relatorio):
-            st.session_state.selecionado = nome_relatorio
-    st.markdown("</div>", unsafe_allow_html=True)
+    # 📁 Menu lateral sempre visível
+    st.sidebar.markdown("## 📁 Relatórios Disponíveis")
 
-    # 📊 Conteúdo principal
-    st.markdown("<div class='main-content'>", unsafe_allow_html=True)
-    relatorio = st.session_state.get("selecionado", "Indicadores")
-    st.markdown(f"### 📊 Relatório: {relatorio}")
-    st.components.v1.iframe(powerbi_links[relatorio], height=600, scrolling=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+    relatorios = {
+        "📊 Indicadores": {
+            "📈 Hierarquia": "Hierarquia",
+            "🎓 Certificado": "Certificado",
+            "🚌 LOG VT": "LOG VT",
+            "⚙️ Eficiência": "Eficiência",
+            "📊 Produtividade": "Produtividade",
+            "🏅 Pontuação": "Pontuação",
+            "🧩 MESH": "MESH",
+            "🧭 Rota Inicial": "Rota Inicial",
+            "🚩 Rota Final": "Rota Final"
+        },
+        "💰 Financeiro": {
+            "🏗️ Faturamento Instalação": "Faturamento Instalação",
+            "🔧 Faturamento Manutenção": "Faturamento Manutenção",
+            "💸 Desconto de revisita": "Desconto de revisita",
+            "🏢 Faturamento MDU": "Faturamento MDU",
+            "🛒 Faturamento Vendas": "Faturamento Vendas"
+            } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
+        "⚙️ Processos Operacionais": {
+            "📝 Realizar IVM": "Realizar IVM",
+            "🚨 Processo disciplinar": "Processo disciplinar"
+        }
+    }
 
-    # 🚪 Botão de logout fixo
-    st.markdown("<div class='logout-button'>", unsafe_allow_html=True)
-    if st.button("🔒 Sair"):
+    # 🔘 Lista única de opções
+    opcoes = []
+    for categoria, itens in relatorios.items():
+        if itens:
+            opcoes.append(f"— {categoria} —")
+            for label, chave in itens.items():
+                opcoes.append(label)
+
+    # 🔘 Seleção única
+    selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
+
+    # 🔍 Mapeia o item selecionado para a chave do relatório
+    for categoria, itens in relatorios.items():
+        if selecionado_label in itens:
+            selecionado = itens[selecionado_label]
+            break
+    else:
+        selecionado = "geral"
+
+    # 📈 Exibe o relatório correspondente
+    st.markdown(f"### 📊 Relatório: {selecionado}")
+    st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
+    # 🚪 Botão de logout
+    st.sidebar.markdown("---")
+    if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
-        st.session_state.selecionado = "Indicadores"
         st.experimental_rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
