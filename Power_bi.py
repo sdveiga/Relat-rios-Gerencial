@@ -115,6 +115,7 @@ else:
     nome = dados["nome"]
 
     # 👤 Sidebar com foto e saudação
+    
     with st.sidebar:
     show_logo("icones/LOGO_MVVS_COLOR.png", sidebar=True)
     st.markdown("## 👤 Usuário")
@@ -183,6 +184,7 @@ else:
 
 
     
+
 
 
 
