@@ -239,6 +239,7 @@ else:
         "⚙️ Processos Operacionais": {
             "📝 Realizar IVM": "Realizar IVM",
             "🚨 Processo disciplinar": "Processo disciplinar"
+            "🎯 ICG": "ICG"
         }
             }  # fim do dicionário de relatórios
 
@@ -270,6 +271,7 @@ else:
     # 📈 Exibe o relatório correspondente no corpo principal
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
 
 
 
