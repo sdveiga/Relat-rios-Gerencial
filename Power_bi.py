@@ -3,11 +3,13 @@ import base64
 import os
 
 # 🔧 Oculta barra superior e rodapé do Streamlit
+
 st.markdown("""
     <style>
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
+    /* Estiliza a sidebar */
     [data-testid="stSidebar"] {
         background-color: #2f2f2f;
         color: white;
@@ -30,7 +32,12 @@ st.markdown("""
 
     /* Oculta o botão de recolher da sidebar */
     [data-testid="collapsedControl"] {
-        display: none !important;
+        visibility: hidden !important;
+        height: 0px !important;
+        width: 0px !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        top: -1000px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -195,6 +202,7 @@ else:
     # 📈 Exibe o relatório correspondente no corpo principal
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
 
 
 
