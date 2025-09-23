@@ -138,7 +138,7 @@ else:
 
         # 📁 Menu lateral com relatórios
         relatorios = {
-            
+            "📊 Indicadores": {
                 "📈 Hierarquia": "Hierarquia",
                 "🎓 Certificado": "Certificado",
                 "🚌 LOG VT": "LOG VT",
@@ -190,6 +190,7 @@ else:
     # 📈 Exibe o relatório correspondente no corpo principal
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
 
 
 
