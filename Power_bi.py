@@ -6,8 +6,7 @@ import os
 
 st.markdown("""
     <style>
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
+    
 
     /* Estiliza a sidebar */
     [data-testid="stSidebar"] {
@@ -220,6 +219,7 @@ else:
     # 📈 Exibe o relatório correspondente no corpo principal
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
 
 
 
