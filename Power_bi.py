@@ -179,8 +179,7 @@ powerbi_links = {
     "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
     "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID",
     "geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
-    "ICG": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
-}
+    }
 
 # 🎨 Fundo
 set_background("icones/Painel_power_point.png")
@@ -240,7 +239,7 @@ else:
         "⚙️ Processos Operacionais": {
             "📝 Realizar IVM": "Realizar IVM",
             "🚨 Processo disciplinar": "Processo disciplinar"
-            "🎯 ICG": "ICG"
+            
         }
             }  # fim do dicionário de relatórios
 
@@ -272,6 +271,7 @@ else:
     # 📈 Exibe o relatório correspondente no corpo principal
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
 
 
 
