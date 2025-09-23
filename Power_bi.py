@@ -7,21 +7,18 @@ st.markdown("""
     <style>
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    </style>
-""", unsafe_allow_html=True)
-
-
-# 🎨 Estiliza a sidebar com fundo cinza escuro
-st.markdown("""
-    <style>
     [data-testid="stSidebar"] {
         background-color: #2f2f2f;
         color: white;
     }
     [data-testid="stSidebar"] .stMarkdown {
         color: white;
+        text-align: center;
     }
     [data-testid="stSidebar"] .stImage {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
         margin-bottom: 20px;
     }
     </style>
@@ -53,22 +50,18 @@ def set_background(png_file):
         </style>
     """, unsafe_allow_html=True)
 
-# 🖼️ Função para exibir logo
-def show_logo(png_file):
-    with open(png_file, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode()
-    st.markdown(f"""
-        <div style="position: absolute; top: 10px; right: 10px; z-index: 100;">
-            <img src="data:image/png;base64,{encoded}" width="150">
-        </div>
-    """, unsafe_allow_html=True)
-
 # 🖼️ Função para exibir foto do usuário
-def exibir_foto(caminho):
+def exibir_foto(caminho, sidebar=False):
     if os.path.exists(caminho):
-        st.image(caminho, width=150)
+        if sidebar:
+            st.sidebar.image(caminho, width=150)
+        else:
+            st.image(caminho, width=150)
     else:
-        st.image("icones/padrao.png", width=150)
+        if sidebar:
+            st.sidebar.image("icones/padrao.png", width=150)
+        else:
+            st.image("icones/padrao.png", width=150)
 
 # 👥 Usuários simulados
 usuarios = {
@@ -102,9 +95,8 @@ powerbi_links = {
     "geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
 }
 
-# 🎨 Fundo e logo
+# 🎨 Fundo
 set_background("icones/Painel_power_point.png")
-
 
 # 🔐 Controle de sessão
 if "logado" not in st.session_state:
@@ -130,68 +122,65 @@ else:
     cargo = dados["cargo"]
     nome = dados["nome"]
 
-    # 👤 Sidebar com foto e saudação
+    # 👤 Sidebar com logo, foto e saudação
     with st.sidebar:
         st.image("icones/LOGO_MVVS_COLOR.png", width=120)
         st.markdown("## 👤 Usuário")
-        exibir_foto(f"icones/{dados['foto']}")
+        exibir_foto(f"icones/{dados['foto']}", sidebar=True)
         st.success(f"Bem-vindo, {nome}!")
-
         st.markdown("## 📁 Relatórios Disponíveis")
 
-
-
-    # 📁 Menu lateral com relatórios
-    relatorios = {
-        "📊 Indicadores": {
-            "📈 Hierarquia": "Hierarquia",
-            "🎓 Certificado": "Certificado",
-            "🚌 LOG VT": "LOG VT",
-            "⚙️ Eficiência": "Eficiência",
-            "📊 Produtividade": "Produtividade",
-            "🏅 Pontuação": "Pontuação",
-            "🧩 MESH": "MESH",
-            "🧭 Rota Inicial": "Rota Inicial",
-            "🚩 Rota Final": "Rota Final"
-        },
-        "💰 Financeiro": {
-            "🏗️ Faturamento Instalação": "Faturamento Instalação",
-            "🔧 Faturamento Manutenção": "Faturamento Manutenção",
-            "💸 Desconto de revisita": "Desconto de revisita",
-            "🏢 Faturamento MDU": "Faturamento MDU",
+        # 📁 Menu lateral com relatórios
+        relatorios = {
+            "📊 Indicadores": {
+                "📈 Hierarquia": "Hierarquia",
+                "🎓 Certificado": "Certificado",
+                "🚌 LOG VT": "LOG VT",
+                "⚙️ Eficiência": "Eficiência",
+                "📊 Produtividade": "Produtividade",
+                "🏅 Pontuação": "Pontuação",
+                "🧩 MESH": "MESH",
+                "🧭 Rota Inicial": "Rota Inicial",
+                "🚩 Rota Final": "Rota Final"
+            },
+            "💰 Financeiro": {
+                "🏗️ Faturamento Instalação": "Faturamento Instalação",
+                "🔧 Faturamento Manutenção": "Faturamento Manutenção",
+                "💸 Desconto de revisita": "Desconto de revisita",
+                "🏢 Faturamento MDU": "Faturamento MDU",
                         "🛒 Faturamento Vendas": "Faturamento Vendas"
         } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
         "⚙️ Processos Operacionais": {
             "📝 Realizar IVM": "Realizar IVM",
             "🚨 Processo disciplinar": "Processo disciplinar"
         }
-    }
+            }  # fim do dicionário de relatórios
 
-    # 🔘 Lista única de opções
-    opcoes = []
-    for categoria, itens in relatorios.items():
-        if itens:
-            opcoes.append(f"— {categoria} —")
-            for label, chave in itens.items():
-                opcoes.append(label)
+        # 🔘 Lista única de opções
+        opcoes = []
+        for categoria, itens in relatorios.items():
+            if itens:
+                opcoes.append(f"— {categoria} —")
+                for label, chave in itens.items():
+                    opcoes.append(label)
 
-    # 🔘 Seleção única
-    selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
+        # 🔘 Seleção única
+        selecionado_label = st.radio("Selecione o relatório:", opcoes)
 
-    # 🔍 Mapeia o item selecionado para a chave do relatório
-    for categoria, itens in relatorios.items():
-        if selecionado_label in itens:
-            selecionado = itens[selecionado_label]
-            break
-    else:
-        selecionado = "geral"
+        # 🔍 Mapeia o item selecionado para a chave do relatório
+        for categoria, itens in relatorios.items():
+            if selecionado_label in itens:
+                selecionado = itens[selecionado_label]
+                break
+        else:
+            selecionado = "geral"
 
-    # 📈 Exibe o relatório correspondente
+        # 🚪 Botão de logout
+        st.markdown("---")
+        if st.button("🔒 Sair"):
+            st.session_state.logado = False
+            st.experimental_rerun()
+
+    # 📈 Exibe o relatório correspondente no corpo principal
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
-
-    # 🚪 Botão de logout
-    st.sidebar.markdown("---")
-    if st.sidebar.button("🔒 Sair"):
-        st.session_state.logado = False
-        st.experimental_rerun()
