@@ -36,12 +36,17 @@ def set_background(png_file):
         </style>
     """, unsafe_allow_html=True)
 
-
+# 🖼️ Função para exibir logo
+def show_logo(png_file):
+    with open(png_file, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+    st.markdown(f"""
+        <div style="position: absolute; top: 10px; right: 10px; z-index: 100;">
+            <img src="data:image/png;base64,{encoded}" width="150">
+        </div>
+    """, unsafe_allow_html=True)
 
 # 🖼️ Função para exibir foto do usuário
-
-
-
 def exibir_foto(caminho):
     if os.path.exists(caminho):
         st.image(caminho, width=150)
@@ -116,7 +121,12 @@ else:
 
         st.markdown("## 📁 Relatórios Disponíveis")
 
-   
+    # 📋 Informações detalhadas no corpo principal
+    st.markdown(f"### 👤 Informações do Usuário")
+    st.markdown(f"**Nome:** {nome}")
+    st.markdown(f"**Cargo:** {cargo}")
+    st.markdown(f"**Data de Admissão:** {dados['admissao']}")
+    st.markdown(f"**Funcionários Abaixo:** {dados['funcionarios']}")
 
     # 📁 Menu lateral com relatórios
     relatorios = {
@@ -135,8 +145,8 @@ else:
             "🏗️ Faturamento Instalação": "Faturamento Instalação",
             "🔧 Faturamento Manutenção": "Faturamento Manutenção",
             "💸 Desconto de revisita": "Desconto de revisita",
-            "🏢 Faturamento MDU": "Faturamento MDU",            
-            "🛒 Faturamento Vendas": "Faturamento Vendas"
+            "🏢 Faturamento MDU": "Faturamento MDU",
+                        "🛒 Faturamento Vendas": "Faturamento Vendas"
         } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
         "⚙️ Processos Operacionais": {
             "📝 Realizar IVM": "Realizar IVM",
@@ -175,3 +185,4 @@ else:
 
 
 
+    
