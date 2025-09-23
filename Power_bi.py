@@ -89,7 +89,6 @@ powerbi_links = {
 set_background("icones/Painel_power_point.png")
 
 
-
 # 🔐 Controle de sessão
 if "logado" not in st.session_state:
     st.session_state.logado = False
@@ -115,14 +114,15 @@ else:
     nome = dados["nome"]
 
     # 👤 Sidebar com foto e saudação
+    with st.sidebar:
+        st.markdown("## 👤 Usuário")
+        exibir_foto(f"icones/{dados['foto']}")
+        st.success(f"Bem-vindo, {nome}!")
 
-with st.sidebar:
-   
-    st.markdown("## 👤 Usuário")
-    exibir_foto(f"icones/{dados['foto']}", sidebar=True)
-    st.success(f"Bem-vindo, {nome}!")
-    st.markdown("## 📊 Relatórios Disponíveis")
-    
+        st.markdown("## 📁 Relatórios Disponíveis")
+
+
+
     # 📁 Menu lateral com relatórios
     relatorios = {
         "📊 Indicadores": {
@@ -179,15 +179,4 @@ with st.sidebar:
         st.experimental_rerun()
 
 
-
     
-
-
-
-
-
-
-
-
-
-
