@@ -87,7 +87,7 @@ powerbi_links = {
 
 # 🎨 Fundo e logo
 set_background("icones/Painel_power_point.png")
-show_logo("icones/LOGO_MVVS_COLOR.png")
+
 
 # 🔐 Controle de sessão
 if "logado" not in st.session_state:
@@ -181,4 +181,5 @@ else:
 
 
     
+
 
