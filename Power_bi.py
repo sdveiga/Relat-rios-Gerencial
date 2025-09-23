@@ -36,17 +36,24 @@ def set_background(png_file):
         </style>
     """, unsafe_allow_html=True)
 
-# 🖼️ Função para exibir logo
-def show_logo(png_file):
-    with open(png_file, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode()
-    st.markdown(f"""
-        <div style="position: absolute; top: 10px; right: 10px; z-index: 100;">
-            <img src="data:image/png;base64,{encoded}" width="150">
-        </div>
-    """, unsafe_allow_html=True)
+
 
 # 🖼️ Função para exibir foto do usuário
+
+def exibir_foto(caminho, sidebar=False):
+    if os.path.exists(caminho):
+        if sidebar:
+            with st.sidebar:
+                st.image(caminho, width=150)
+        else:
+            st.image(caminho, width=150)
+    else:
+        if sidebar:
+            with st.sidebar:
+                st.image("icones/padrao.png", width=150)
+        else:
+            st.image("icones/padrao.png", width=150)
+
 def exibir_foto(caminho):
     if os.path.exists(caminho):
         st.image(caminho, width=150)
@@ -177,4 +184,5 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
