@@ -2,7 +2,7 @@ import streamlit as st
 import base64
 import os
 
-# 🔧 Oculta barra superior e rodapé
+# 🔧 Estilos personalizados
 st.markdown("""
     <style>
     footer, header {visibility: hidden;}
@@ -11,7 +11,7 @@ st.markdown("""
         top: 80px;
         left: 0;
         width: 220px;
-        height: 100%;
+        height: calc(100% - 100px);
         background-color: rgba(0,0,0,0.6);
         padding: 20px;
         overflow-y: auto;
@@ -21,16 +21,19 @@ st.markdown("""
     .menu-container h3 {
         margin-top: 0;
         color: #fff;
+        font-size: 20px;
     }
     .menu-container button {
         width: 100%;
         margin: 5px 0;
         background-color: #444;
-        color: white;
+        color: white !important;
         border: none;
-        padding: 8px;
+        padding: 10px;
         border-radius: 5px;
         text-align: left;
+        font-weight: bold;
+        cursor: pointer;
     }
     .menu-container button:hover {
         background-color: #666;
@@ -38,6 +41,12 @@ st.markdown("""
     .main-content {
         margin-left: 240px;
         padding: 20px;
+    }
+    .logout-button {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 100;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -77,7 +86,14 @@ def exibir_foto(caminho):
 
 # 👥 Usuários simulados
 usuarios = {
-    "gerente_user": {"senha": "789", "cargo": "GESTOR TI", "nome": "Samuel David Veiga", "foto": "gerente.png", "admissao": "10/07/2023", "funcionarios": 330}
+    "gerente_user": {
+        "senha": "789",
+        "cargo": "GESTOR TI",
+        "nome": "Samuel David Veiga",
+        "foto": "gerente.png",
+        "admissao": "10/07/2023",
+        "funcionarios": 330
+    }
 }
 
 # 🔗 Relatórios simulados
@@ -156,9 +172,8 @@ else:
     st.components.v1.iframe(powerbi_links[relatorio], height=600, scrolling=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-
-    # 🚪 Botão de logout dentro do menu lateral
-    st.markdown("<div class='menu-container'>", unsafe_allow_html=True)
+    # 🚪 Botão de logout fixo
+    st.markdown("<div class='logout-button'>", unsafe_allow_html=True)
     if st.button("🔒 Sair"):
         st.session_state.logado = False
         st.session_state.selecionado = "Indicadores"
