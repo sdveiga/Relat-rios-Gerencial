@@ -40,19 +40,7 @@ def set_background(png_file):
 
 # 🖼️ Função para exibir foto do usuário
 
-def exibir_foto(caminho, sidebar=False):
-    if os.path.exists(caminho):
-        if sidebar:
-            with st.sidebar:
-                st.image(caminho, width=150)
-        else:
-            st.image(caminho, width=150)
-    else:
-        if sidebar:
-            with st.sidebar:
-                st.image("icones/padrao.png", width=150)
-        else:
-            st.image("icones/padrao.png", width=150)
+
 
 def exibir_foto(caminho):
     if os.path.exists(caminho):
@@ -184,5 +172,6 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
