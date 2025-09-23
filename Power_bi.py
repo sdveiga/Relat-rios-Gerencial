@@ -13,8 +13,11 @@ st.markdown("""
         color: white;
     }
 
+    [data-testid="stSidebar"] * {
+        color: white !important;
+    }
+
     [data-testid="stSidebar"] .stMarkdown {
-        color: white;
         text-align: center;
     }
 
@@ -23,15 +26,6 @@ st.markdown("""
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 20px;
-    }
-
-    /* Força cor branca nos textos dos botões de rádio */
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] .css-1c7y2kd,
-    [data-testid="stSidebar"] .css-1v0mbdj,
-    [data-testid="stSidebar"] .css-1qg05tj,
-    [data-testid="stSidebar"] .css-1n76uvr {
-        color: white !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -196,5 +190,6 @@ else:
     # 📈 Exibe o relatório correspondente no corpo principal
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
 
 
