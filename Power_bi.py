@@ -115,7 +115,7 @@ else:
 
     # 👤 Sidebar com foto e saudação
     with st.sidebar:
-        st.image("icones/LOGO_MVVS_COLOR.png", width=120)
+        show_logo("icones/LOGO_MVVS_COLOR.png", sidebar=True)
         st.markdown("## 👤 Usuário")
         exibir_foto(f"icones/{dados['foto']}")
         st.success(f"Bem-vindo, {nome}!")
@@ -181,4 +181,5 @@ else:
 
 
     
+
 
