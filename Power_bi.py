@@ -121,12 +121,7 @@ else:
 
         st.markdown("## 📁 Relatórios Disponíveis")
 
-    # 📋 Informações detalhadas no corpo principal
-    st.markdown(f"### 👤 Informações do Usuário")
-    st.markdown(f"**Nome:** {nome}")
-    st.markdown(f"**Cargo:** {cargo}")
-    st.markdown(f"**Data de Admissão:** {dados['admissao']}")
-    st.markdown(f"**Funcionários Abaixo:** {dados['funcionarios']}")
+   
 
     # 📁 Menu lateral com relatórios
     relatorios = {
@@ -186,3 +181,4 @@ else:
 
 
     
+
