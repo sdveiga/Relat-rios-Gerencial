@@ -10,6 +10,23 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+
+# 🎨 Estiliza a sidebar com fundo cinza escuro
+st.markdown("""
+    <style>
+    [data-testid="stSidebar"] {
+        background-color: #2f2f2f;
+        color: white;
+    }
+    [data-testid="stSidebar"] .stMarkdown {
+        color: white;
+    }
+    [data-testid="stSidebar"] .stImage {
+        margin-bottom: 20px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
     with open(png_file, "rb") as f:
@@ -181,6 +198,7 @@ else:
 
 
     
+
 
 
 
