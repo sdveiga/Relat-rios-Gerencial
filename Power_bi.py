@@ -120,9 +120,8 @@ with st.sidebar:
     st.markdown("## 👤 Usuário")
     exibir_foto(f"icones/{dados['foto']}", sidebar=True)
     st.success(f"Bem-vindo, {nome}!")
-    st.markdown("## 📁 Relatórios Disponíveis")
-   
-
+    st.markdown("## 📊 Relatórios Disponíveis")
+    
     # 📁 Menu lateral com relatórios
     relatorios = {
         "📊 Indicadores": {
@@ -181,6 +180,7 @@ with st.sidebar:
 
 
     
+
 
 
 
