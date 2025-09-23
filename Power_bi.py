@@ -60,6 +60,16 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+    <style>
+    /* Oculta o ícone de recolher da sidebar */
+    span.st-emotion-cache-pd6qx2.ejhh0er0 {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
     with open(png_file, "rb") as f:
@@ -220,6 +230,7 @@ else:
     # 📈 Exibe o relatório correspondente no corpo principal
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
 
 
 
