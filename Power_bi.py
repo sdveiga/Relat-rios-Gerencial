@@ -21,6 +21,9 @@ st.markdown("""
         margin-right: auto;
         margin-bottom: 20px;
     }
+    [data-testid="stSidebar"] label {
+    color: white !important;
+}
     </style>
 """, unsafe_allow_html=True)
 
@@ -184,3 +187,4 @@ else:
     # 📈 Exibe o relatório correspondente no corpo principal
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
