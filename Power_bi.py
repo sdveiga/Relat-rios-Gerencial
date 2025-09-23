@@ -114,6 +114,28 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+    <style>
+    /* Oculta o botão de recolher da sidebar e todos seus elementos */
+    div[data-testid="stSidebarCollapseButton"],
+    button[data-testid="stBaseButton-headerNoPadding"],
+    span.st-emotion-cache-189uypx.e1t4gh342,
+    span.st-emotion-cache-pd6qx2.ejhh0er0 {
+        display: none !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        height: 0 !important;
+        width: 0 !important;
+        overflow: hidden !important;
+        z-index: -1 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
+
 # 🖼️ Função para exibir foto do usuário
 def exibir_foto(caminho, sidebar=False):
     if os.path.exists(caminho):
@@ -248,6 +270,7 @@ else:
     # 📈 Exibe o relatório correspondente no corpo principal
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
 
 
 
