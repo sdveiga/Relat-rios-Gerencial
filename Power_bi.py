@@ -27,6 +27,11 @@ st.markdown("""
         margin-right: auto;
         margin-bottom: 20px;
     }
+
+    /* Oculta o botão de recolher da sidebar */
+    [data-testid="collapsedControl"] {
+        display: none !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -190,6 +195,7 @@ else:
     # 📈 Exibe o relatório correspondente no corpo principal
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+
 
 
 
