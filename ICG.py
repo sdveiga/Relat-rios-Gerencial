@@ -1,233 +1,116 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import base64
-import os
+from PIL import Image
 
-st.set_page_config(page_title="Painel FCA", layout="wide")
-caminho_csv = "historico_fca.csv"
+# Simulação de login
+def login():
+    st.sidebar.title("🔐 Login")
+    username = st.sidebar.text_input("Usuário")
+    password = st.sidebar.text_input("Senha", type="password")
+    role = st.sidebar.selectbox("Nível Hierárquico", ["CEO", "DIRETOR", "GERENTE", "COORDENADOR", "SUPERVISOR", "OPERADOR", "TECNICO"])
+    setor = st.sidebar.radio("Setor de Atuação", ["Instalação", "Manutenção"])
+    if st.sidebar.button("Entrar"):
+        st.session_state.logged_in = True
+        st.session_state.username = username
+        st.session_state.role = role
+        st.session_state.setor = setor
 
-# 🔧 Fundo e logo
-def set_background(png_file):
-    with open(png_file, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode()
-    st.markdown(f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/png;base64,{encoded}");
-            background-size: cover;
-            background-position: center;
-            color: white;
-        }}
-        label {{ color: white !important; }}
-        footer {{visibility: hidden;}}
-        header {{visibility: hidden;}}
-        div.stButton > button:first-child {{
-            background-color: #808080;
-            color: white;
-            border: none;
-            padding: 0.5em 1em;
-            border-radius: 5px;
-        }}
-        div.stButton > button:first-child:hover {{
-            background-color: #696969;
-        }}
-        </style>
-    """, unsafe_allow_html=True)
+# Lista de todos os indicadores
+todos = [
+    "CERTIFICADO", "TEC1", "HIERARQUIA", "IQI", "OS DIGITAL", "EFICIENCIA", "BLINDAGEM TV",
+    "CUSTO DE MATERIAL", "LOG VT", "QUEBRA", "VT POR EQUIPE", "ROTA INICIAL", "ROTA FINAL",
+    "FATURAMENTO GERAL", "PONTUAÇÃO INSTALAÇÃO", "DESCONTO DE REVISTA", "PRODUTIVIDADE ONLINE"
+]
 
-def show_logo(png_file):
-    with open(png_file, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode()
-    st.markdown(f"""
-        <div style="position: absolute; top: 10px; right: 10px; z-index: 100;">
-            <img src="data:image/png;base64,{encoded}" width="150">
-        </div>
-    """, unsafe_allow_html=True)
+# Indicadores por cargo
+def indicadores_por_cargo(cargo):
+    indicadores = {
+        "CEO": todos,
+        "DIRETOR": todos,
+        "GERENTE": todos,
+        "COORDENADOR": todos,
+        "SUPERVISOR": todos_menos(["FATURAMENTO GERAL", "PONTUAÇÃO INSTALAÇÃO", "DESCONTO DE REVISTA", "PRODUTIVIDADE ONLINE"]),
+        "OPERADOR": todos_menos(["VT POR EQUIPE", "ROTA INICIAL", "ROTA FINAL", "FATURAMENTO GERAL", "PONTUAÇÃO INSTALAÇÃO", "DESCONTO DE REVISTA", "PRODUTIVIDADE ONLINE"]),
+        "TECNICO": todos_menos(["VT POR EQUIPE", "ROTA INICIAL", "ROTA FINAL", "FATURAMENTO GERAL", "PONTUAÇÃO INSTALAÇÃO", "DESCONTO DE REVISTA", "PRODUTIVIDADE ONLINE"]),
+    }
+    return indicadores.get(cargo, [])
 
-def exibir_foto(caminho):
-    if os.path.exists(caminho):
-        st.image(caminho, width=150)
-    else:
-        st.image("icones/padrao.png", width=150)
+def todos_menos(lista):
+    return [i for i in todos if i not in lista]
 
-# 👥 Usuários simulados
-usuarios = {
-    "ceo_user": {"senha": "123", "cargo": "CEO", "nome": "Carlos", "foto": "ceo.png"},
-    "diretor_user": {"senha": "456", "cargo": "DIRETOR", "nome": "Fernanda", "foto": "diretor.png"},
-    "gerente_user": {"senha": "789", "cargo": "GERENTE", "nome": "Samuel David Veiga", "foto": "gerente.png"},
-    "coord_user": {"senha": "abc", "cargo": "COORDENADOR", "nome": "Luciana", "foto": "coord.png"},
-    "sup_user": {"senha": "def", "cargo": "SUPERVISOR", "nome": "Rafael", "foto": "sup.png"},
-    "cop_user": {"senha": "ghi", "cargo": "OPERADOR", "nome": "Ana", "foto": "cop.png"},
+# Metas por setor
+metas_instalacao = {
+    "1º Trabalho": 90, "Aderência na URA": 95, "Baixa TOA": 90, "Baixa TMO": 95,
+    "Comunicação Com Padrão": 90, "Inspeções Conformes": 85, "Produtividade": 90,
+    "NR 35": 95, "O.S Digital": 25, "Qualidade Atendimento": 90, "Quebra Qualificada": 90,
+    "Quebra": 5, "TEC1": 90, "Tempo em atendimento": 25, "Tempo em deslocamento": 25,
+    "Técnico Consultivo": 25, "Recomendação MESH": 90, "BDS": 90, "Certidão Atendimento": 90,
+    "Qualidade Atendimento com Falha": 90, "% Avaliação": 75, "TNPS Jornada": 75
 }
 
-hierarquia = ["OPERADOR", "SUPERVISOR", "COORDENADOR", "GERENTE", "DIRETOR", "CEO"]
+metas_manutencao = metas_instalacao.copy()
+metas_manutencao.update({
+    "Tempo em atendimento": 15,
+    "Tempo em deslocamento": 15,
+    "Técnico Consultivo": 15,
+    "Certidão Atendimento": None  # Não aplicável
+})
 
-def pode_ver(cargo_atual, cargo_registro):
-    return hierarquia.index(cargo_atual.upper()) > hierarquia.index(cargo_registro.upper())
+# Página principal
+def main():
+    st.title("📊 Painel de Indicadores")
+    st.sidebar.image("foto_usuario.jpg", width=150)
+    st.sidebar.markdown(f"👋 Seja bem-vindo, **{st.session_state.username}**")
+    st.sidebar.markdown("### Menu")
+    page = st.sidebar.radio("Navegação", ["Indicadores", "Justificativas", "IVM"])
 
-set_background("icones/Painel_power_point.png")
-show_logo("icones/LOGO_MVVS_COLOR.png")
+    if page == "Indicadores":
+        st.subheader("🔍 Indicadores disponíveis")
+        indicadores = indicadores_por_cargo(st.session_state.role)
+        for indicador in indicadores:
+            st.markdown(f"- {indicador}")
+        st.markdown("### 📈 Visualização Power BI")
+        st.components.v1.iframe("https://app.powerbi.com/view?r=SEU_LINK_AQUI", height=600, scrolling=True)
 
-if "logado" not in st.session_state:
-    st.session_state.logado = False
+        st.markdown("### 🎯 Metas do Setor")
+        metas = metas_instalacao if st.session_state.setor == "Instalação" else metas_manutencao
+        df_metas = pd.DataFrame(list(metas.items()), columns=["Indicador", "Meta"])
+        st.dataframe(df_metas)
 
-if not st.session_state.logado:
-    st.markdown("<h1 style='text-align: center;'>PAINEL GERENCIAL</h1>", unsafe_allow_html=True)
-    st.markdown("### 🔐 Login de Acesso")
-    usuario = st.text_input("Usuário")
-    senha = st.text_input("Senha", type="password")
+    elif page == "Justificativas":
+        st.subheader("📝 Justificativa de Resultados")
+        indicador = st.selectbox("Indicador", todos)
+        fato = st.text_area("Fato")
+        causa = st.text_area("Causa")
+        acao = st.text_area("Ação")
+        if st.button("Enviar Justificativa"):
+            nova_justificativa = {
+                "Usuário": st.session_state.username,
+                "Indicador": indicador,
+                "Fato": fato,
+                "Causa": causa,
+                "Ação": acao
+            }
+            if "justificativas" not in st.session_state:
+                st.session_state.justificativas = []
+            st.session_state.justificativas.append(nova_justificativa)
+            st.success("Justificativa registrada com sucesso!")
 
-    if st.button("Entrar"):
-        if usuario in usuarios and usuarios[usuario]["senha"] == senha:
-            st.session_state.logado = True
-            st.session_state.usuario = usuario
-        else:
-            st.error("❌ Usuário ou senha incorretos.")
-if st.session_state.logado:
-    dados = usuarios[st.session_state.usuario]
-    cargo = dados["cargo"]
-    nome = dados["nome"]
+        if "justificativas" in st.session_state:
+            st.markdown("### 📋 Histórico de Justificativas")
+            df = pd.DataFrame(st.session_state.justificativas)
+            st.dataframe(df)
 
-    col1, col2 = st.columns([1, 3])
-    with col1:
-        exibir_foto(f"icones/{dados['foto']}")
-        st.success(f"✅ Bem-vindo, {nome}!")
+    elif page == "IVM":
+        st.subheader("📋 Formulário IVM")
+        st.markdown("Preencha o formulário abaixo:")
+        st.components.v1.iframe("https://forms.office.com/YOUR_FORM_LINK", height=700)
 
-    with col2:
-        st.markdown(f"**Nome:** {nome}")
-        st.markdown(f"**Cargo:** {cargo}")
+# Inicialização
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 
-    menu = st.sidebar.radio("📁 Menu", ["📊 Indicadores", "🔒 Sair"])
-
-    if menu == "📊 Indicadores":
-        st.markdown("## 📊 Indicadores")
-        aba_fca = st.radio("Escolha uma opção:", ["🔧 Preenchimento FCA", "📈 Apresentação FCA"], horizontal=True)
-
-        # Parte 3 e Parte 4 entram aqui
-    if aba_fca == "🔧 Preenchimento FCA":
-            indicadores_bom_para_baixo = [
-            "1º Trabalho", "Quebra de Agenda", "Quebra Qualificada", "Revisita",
-            "Certidão Validado Com falha", "Serviço não realizado", "Serviço realizado, sem Resolução"
-        ]
-
-        def esta_fora_da_meta(item):
-            if item["Indicador"] in indicadores_bom_para_baixo:
-                return float(item["Nota Atual"]) > float(item["Meta"])
-            else:
-                return float(item["Nota Atual"]) < float(item["Meta"])
-
-        if not os.path.exists(caminho_csv):
-            colunas = ["Indicador", "Fato", "Causas", "Ações", "Mês", "Supervisor", "Cargo Supervisor", "Tipo", "Nota Atual", "Meta", "Evidencias"]
-            pd.DataFrame(columns=colunas).to_csv(caminho_csv, index=False)
-
-        meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
-
-        indicadores = [
-            {"Indicador": "1º Trabalho", "Instalacao": 20, "Manutencao": 30},
-            {"Indicador": "Aderência na URA", "Instalacao": 90, "Manutencao": 90},
-            {"Indicador": "Baixa TOA", "Instalacao": 95, "Manutencao": 95},
-            {"Indicador": "Com Geolocalização", "Instalacao": 90, "Manutencao": 90},
-            {"Indicador": "Geolocalização Com Padrão", "Instalacao": 90, "Manutencao": 90},
-            {"Indicador": "Inspeções Conformes", "Instalacao": 85, "Manutencao": None},
-            {"Indicador": "Inspeções Realizadas", "Instalacao": 35, "Manutencao": None},
-            {"Indicador": "NR 35", "Instalacao": 99, "Manutencao": None},
-            {"Indicador": "O.S Digital", "Instalacao": 98, "Manutencao": None},
-            {"Indicador": "Produtividade", "Instalacao": 2.5, "Manutencao": 6},
-            {"Indicador": "Quebra de Agenda", "Instalacao": 25, "Manutencao": 15},
-            {"Indicador": "Quebra Qualificada", "Instalacao": 7, "Manutencao": 6},
-            {"Indicador": "Revisita", "Instalacao": 7, "Manutencao": 7},
-            {"Indicador": "TEC1", "Instalacao": 96, "Manutencao": 97},
-            {"Indicador": "Técnico Consultivo", "Instalacao": 2.5, "Manutencao": 2.5},
-            {"Indicador": "Recomendação MESH", "Instalacao": None, "Manutencao": 90},
-            {"Indicador": "Bandsteering", "Instalacao": 90, "Manutencao": None},
-            {"Indicador": "Certidão Atendimento", "Instalacao": 90, "Manutencao": 90},
-            {"Indicador": "Certidão Validado Com falha", "Instalacao": 20, "Manutencao": 20},
-            {"Indicador": "%Blindagem", "Instalacao": None, "Manutencao": 90},
-            {"Indicador": "% Avaliação", "Instalacao": 15, "Manutencao": 15},
-            {"Indicador": "TNPS Jornada", "Instalacao": 75, "Manutencao": 75},
-            {"Indicador": "Serviço não realizado", "Instalacao": 0.3, "Manutencao": 0.3},
-            {"Indicador": "Serviço realizado, sem Resolução", "Instalacao": 7, "Manutencao": 7}
-        ]
-        df_base = pd.DataFrame(indicadores)
-
-        st.title("📋 Preenchimento FCA dos Indicadores")
-        mes_ref = st.selectbox("📅 Mês de referência", meses)
-        tipo = st.selectbox("🔧 Tipo de operação", ["Instalação", "Manutenção"])
-        coluna_meta = "Instalacao" if tipo == "Instalação" else "Manutencao"
-
-        df_filtrado = df_base[df_base[coluna_meta].notnull()].copy()
-        notas = []
-        metas = []
-
-        for i, row in df_filtrado.iterrows():
-            meta = row[coluna_meta]
-            nota = st.number_input(f"{row['Indicador']} (Meta: {meta})", min_value=0.0, value=0.0, step=0.1, key=f"nota_{i}")
-            notas.append(nota)
-            metas.append(meta)
-
-        df_filtrado["Meta"] = metas
-        df_filtrado["Nota Atual"] = notas
-        df_filtrado["Status"] = df_filtrado.apply(
-            lambda row: "Dentro da Meta" if not esta_fora_da_meta(row) else "Fora da Meta",
-            axis=1
-        )
-        st.dataframe(df_filtrado[["Indicador", "Meta", "Nota Atual", "Status"]])
-
-        st.subheader("🧠 FCA - Fato, Causa, Ação + Evidências")
-        fca_data = []
-
-        for i, row in df_filtrado.iterrows():
-            if row["Status"] == "Fora da Meta":
-                st.markdown(f"### {row['Indicador']}")
-                fato = st.text_area(f"Fato ({row['Indicador']})", key=f"fato_{i}")
-                causas = st.text_area(f"Causas separadas por vírgula ({row['Indicador']})", key=f"causa_{i}")
-                acoes = st.text_area(f"Ações separadas por vírgula ({row['Indicador']})", key=f"acao_{i}")
-                evid1 = st.file_uploader(f"Evidência 1 - {row['Indicador']}", type=["png", "jpg", "jpeg"], key=f"evid1_{i}")
-                evid2 = st.file_uploader(f"Evidência 2 - {row['Indicador']}", type=["png", "jpg", "jpeg"], key=f"evid2_{i}")
-
-                fca_data.append({
-                    "Indicador": row["Indicador"],
-                    "Fato": fato,
-                    "Causas": [c.strip() for c in causas.split(",") if c.strip()],
-                    "Ações": [a.strip() for a in acoes.split(",") if a.strip()],
-                    "Evidencias": [evid1, evid2],
-                    "Mês": mes_ref,
-                    "Supervisor": nome,
-                    "Cargo Supervisor": cargo,
-                    "Tipo": tipo,
-                    "Nota Atual": row["Nota Atual"],
-                    "Meta": row["Meta"]
-                })
-
-        if st.button("Salvar FCA"):
-            df_novo = pd.DataFrame(fca_data).drop(columns=["Evidencias"], errors="ignore")
-            df_existente = pd.read_csv(caminho_csv)
-            df_final = pd.concat([df_existente, df_novo], ignore_index=True)
-            df_final.to_csv(caminho_csv, index=False)
-            st.success("✅ FCA salvo com sucesso!")
-    elif aba_fca == "📈 Apresentação FCA":
-                st.title("🎯 Apresentação dos Indicadores e FCA")
-
-        if st.button("🗑️ Apagar todos os registros anteriores"):
-            os.remove(caminho_csv)
-            pd.DataFrame(columns=["Indicador", "Fato", "Causas", "Ações", "Mês", "Supervisor", "Cargo Supervisor", "Tipo", "Nota Atual", "Meta", "Evidencias"]).to_csv(caminho_csv, index=False)
-            st.success("Todos os registros foram apagados.")
-
-        historico_df = pd.read_csv(caminho_csv)
-        historico = historico_df.to_dict(orient="records")
-
-        mes_selecionado = st.selectbox("📅 Selecione o mês", meses)
-        tipo_filtro = st.selectbox("🔧 Tipo de operação", ["Instalação", "Manutenção"])
-        supervisor_filtro = st.text_input("🔍 Filtrar por nome do responsável (opcional)")
-
-        dados_filtrados = [
-            item for item in historico
-            if item["Mês"] == mes_selecionado
-            and item["Tipo"] == tipo_filtro
-            and pode_ver(cargo, item.get("Cargo Supervisor", ""))
-            and (supervisor
-    
-    elif menu == "🔒 Sair":
-        st.session_state.logado = False
-        st.experimental_rerun()
-
+if not st.session_state.logged_in:
+    login()
+else:
+    main()
