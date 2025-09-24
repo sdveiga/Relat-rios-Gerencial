@@ -22,6 +22,16 @@ def set_background(png_file):
         label {{ color: white !important; }}
         footer {{visibility: hidden;}}
         header {{visibility: hidden;}}
+        div.stButton > button:first-child {{
+            background-color: #808080;
+            color: white;
+            border: none;
+            padding: 0.5em 1em;
+            border-radius: 5px;
+        }}
+        div.stButton > button:first-child:hover {{
+            background-color: #696969;
+        }}
         </style>
     """, unsafe_allow_html=True)
 
@@ -55,12 +65,15 @@ hierarquia = ["OPERADOR", "SUPERVISOR", "COORDENADOR", "GERENTE", "DIRETOR", "CE
 def pode_ver(cargo_atual, cargo_registro):
     return hierarquia.index(cargo_atual.upper()) > hierarquia.index(cargo_registro.upper())
 
+# 🎨 Aplica fundo e logo
 set_background("icones/Painel_power_point.png")
 show_logo("icones/LOGO_MVVS_COLOR.png")
 
+# 🔐 Controle de sessão
 if "logado" not in st.session_state:
     st.session_state.logado = False
 
+# 🔐 Tela de login
 if not st.session_state.logado:
     st.markdown("<h1 style='text-align: center;'>PAINEL GERENCIAL</h1>", unsafe_allow_html=True)
     st.markdown("### 🔐 Login de Acesso")
@@ -73,61 +86,40 @@ if not st.session_state.logado:
             st.session_state.usuario = usuario
         else:
             st.error("❌ Usuário ou senha incorretos.")
+# 👤 Dados do usuário logado
+dados = usuarios[st.session_state.usuario]
+cargo = dados["cargo"]
+nome = dados["nome"]
 
-# 🔧 Indicadores onde valores menores são melhores
-indicadores_bom_para_baixo = [
-    "1º Trabalho", "Quebra de Agenda", "Quebra Qualificada", "Revisita",
-    "Certidão Validado Com falha", "Serviço não realizado", "Serviço realizado, sem Resolução"
-]
+col1, col2 = st.columns([1, 3])
+with col1:
+    exibir_foto(f"icones/{dados['foto']}")
+    st.success(f"✅ Bem-vindo, {nome}!")
 
-# 🔧 Função auxiliar para verificar se está fora da meta
-def esta_fora_da_meta(item):
-    if item["Indicador"] in indicadores_bom_para_baixo:
-        return float(item["Nota Atual"]) > float(item["Meta"])
-    else:
-        return float(item["Nota Atual"]) < float(item["Meta"])
+with col2:
+    st.markdown(f"**Nome:** {nome}")
+    st.markdown(f"**Cargo:** {cargo}")
 
-# 🔧 Cria o CSV vazio se não existir
-if not os.path.exists(caminho_csv):
-    colunas = ["Indicador", "Fato", "Causas", "Ações", "Mês", "Supervisor", "Cargo Supervisor", "Tipo", "Nota Atual", "Meta", "Evidencias"]
-    pd.DataFrame(columns=colunas).to_csv(caminho_csv, index=False)
+# 📁 Menu lateral
+menu = st.sidebar.radio("📁 Menu", ["📊 Indicadores", "🔒 Sair"])
 
-pagina = st.sidebar.radio("Navegar para:", ["Preenchimento FCA", "Apresentação"])
-meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+if menu == "📊 Indicadores":
+    st.markdown("## 📊 Indicadores")
+    aba_fca = st.radio("Escolha uma opção:", ["🔧 Preenchimento FCA", "📈 Apresentação FCA"], horizontal=True)
 
-indicadores = [
-    {"Indicador": "1º Trabalho", "Instalacao": 20, "Manutencao": 30},
-    {"Indicador": "Aderência na URA", "Instalacao": 90, "Manutencao": 90},
-    {"Indicador": "Baixa TOA", "Instalacao": 95, "Manutencao": 95},
-    {"Indicador": "Com Geolocalização", "Instalacao": 90, "Manutencao": 90},
-    {"Indicador": "Geolocalização Com Padrão", "Instalacao": 90, "Manutencao": 90},
-    {"Indicador": "Inspeções Conformes", "Instalacao": 85, "Manutencao": None},
-    {"Indicador": "Inspeções Realizadas", "Instalacao": 35, "Manutencao": None},
-    {"Indicador": "NR 35", "Instalacao": 99, "Manutencao": None},
-    {"Indicador": "O.S Digital", "Instalacao": 98, "Manutencao": None},
-    {"Indicador": "Produtividade", "Instalacao": 2.5, "Manutencao": 6},
-    {"Indicador": "Quebra de Agenda", "Instalacao": 25, "Manutencao": 15},
-    {"Indicador": "Quebra Qualificada", "Instalacao": 7, "Manutencao": 6},
-    {"Indicador": "Revisita", "Instalacao": 7, "Manutencao": 7},
-    {"Indicador": "TEC1", "Instalacao": 96, "Manutencao": 97},
-    {"Indicador": "Técnico Consultivo", "Instalacao": 2.5, "Manutencao": 2.5},
-    {"Indicador": "Recomendação MESH", "Instalacao": None, "Manutencao": 90},
-    {"Indicador": "Bandsteering", "Instalacao": 90, "Manutencao": None},
-    {"Indicador": "Certidão Atendimento", "Instalacao": 90, "Manutencao": 90},
-    {"Indicador": "Certidão Validado Com falha", "Instalacao": 20, "Manutencao": 20},
-    {"Indicador": "%Blindagem", "Instalacao": None, "Manutencao": 90},
-    {"Indicador": "% Avaliação", "Instalacao": 15, "Manutencao": 15},
-    {"Indicador": "TNPS Jornada", "Instalacao": 75, "Manutencao": 75},
-    {"Indicador": "Serviço não realizado", "Instalacao": 0.3, "Manutencao": 0.3},
-    {"Indicador": "Serviço realizado, sem Resolução", "Instalacao": 7, "Manutencao": 7}
-]
-df_base = pd.DataFrame(indicadores)
+    if aba_fca == "🔧 Preenchimento FCA":
+        # 🔁 Aqui entra o código do preenchimento FCA (Parte 3)
+        # Já está pronto para funcionar com cargo e nome do usuário logado
 
-cargo = usuarios[st.session_state.usuario]["cargo"]
-nome = usuarios[st.session_state.usuario]["nome"]
+    elif aba_fca == "📈 Apresentação FCA":
+        # 🔁 Aqui entra o código da apresentação FCA (Parte 4)
+        # Filtra por hierarquia usando pode_ver(cargo, item["Cargo Supervisor"])
 
-if pagina == "Preenchimento FCA":
-    st.title("📋 Preenchimento FCA dos Indicadores")
+elif menu == "🔒 Sair":
+    st.session_state.logado = False
+    st.experimental_rerun()
+
+        st.title("📋 Preenchimento FCA dos Indicadores")
     mes_ref = st.selectbox("📅 Mês de referência", meses)
     tipo = st.selectbox("🔧 Tipo de operação", ["Instalação", "Manutenção"])
     coluna_meta = "Instalacao" if tipo == "Instalação" else "Manutencao"
@@ -182,7 +174,6 @@ if pagina == "Preenchimento FCA":
         df_final = pd.concat([df_existente, df_novo], ignore_index=True)
         df_final.to_csv(caminho_csv, index=False)
         st.success("✅ FCA salvo com sucesso!")
-elif pagina == "Apresentação":
     st.title("🎯 Apresentação dos Indicadores e FCA")
 
     if st.button("🗑️ Apagar todos os registros anteriores"):
@@ -243,3 +234,5 @@ elif pagina == "Apresentação":
         df_export = pd.DataFrame(dados_filtrados).drop(columns=["Evidencias"], errors="ignore")
         csv = df_export.to_csv(index=False).encode("utf-8")
         st.download_button("📥 Baixar FCA em CSV", data=csv, file_name=f"fca_{mes_selecionado}_{tipo_filtro}.csv", mime="text/csv")
+        
+            st.error("❌ Usuário ou senha incorretos.")
