@@ -1,76 +1,13 @@
 import streamlit as st
+import pandas as pd
+import plotly.express as px
 import base64
 import os
 
-# 🔧 Oculta barra superior e rodapé do Streamlit
+st.set_page_config(page_title="Painel FCA", layout="wide")
+caminho_csv = "historico_fca.csv"
 
-st.markdown("""
-    <style>
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-
-    /* Estiliza a sidebar */
-    [data-testid="stSidebar"] {
-        background-color: #2f2f2f;
-        color: white;
-    }
-
-    [data-testid="stSidebar"] * {
-        color: white !important;
-    }
-
-    [data-testid="stSidebar"] .stMarkdown {
-        text-align: center;
-    }
-
-    [data-testid="stSidebar"] .stImage {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 20px;
-    }
-
-    /* Oculta o botão de recolher da sidebar */
-    [data-testid="collapsedControl"] {
-        visibility: hidden !important;
-        height: 0px !important;
-        width: 0px !important;
-        overflow: hidden !important;
-        position: absolute !important;
-        top: -1000px !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-
-st.markdown("""
-    <style>
-    /* Oculta o botão de recolher da sidebar */
-    div[data-testid="collapsedControl"] {
-        visibility: hidden !important;
-        display: none !important;
-        position: absolute !important;
-        top: -9999px !important;
-        left: -9999px !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-        z-index: -1 !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-    /* Oculta o ícone de recolher da sidebar */
-    span.st-emotion-cache-pd6qx2.ejhh0er0 {
-        display: none !important;
-        visibility: hidden !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# 🔧 Função para definir imagem de fundo
+# 🔧 Fundo e logo
 def set_background(png_file):
     with open(png_file, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
@@ -83,112 +20,47 @@ def set_background(png_file):
             color: white;
         }}
         label {{ color: white !important; }}
-        div.stButton > button:first-child {{
-            background-color: #808080;
-            color: white;
-            border: none;
-            padding: 0.5em 1em;
-            border-radius: 5px;
-        }}
-        div.stButton > button:first-child:hover {{
-            background-color: #696969;
-        }}
+        footer {{visibility: hidden;}}
+        header {{visibility: hidden;}}
         </style>
     """, unsafe_allow_html=True)
 
-st.markdown("""
-    <style>
-    /* Oculta o ícone de recolher da sidebar e seu contêiner */
-    span.st-emotion-cache-189uypx.e1t4gh342,
-    span.st-emotion-cache-pd6qx2.ejhh0er0 {
-        display: none !important;
-        visibility: hidden !important;
-        position: absolute !important;
-        top: -9999px !important;
-        left: -9999px !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-        z-index: -1 !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
+def show_logo(png_file):
+    with open(png_file, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+    st.markdown(f"""
+        <div style="position: absolute; top: 10px; right: 10px; z-index: 100;">
+            <img src="data:image/png;base64,{encoded}" width="150">
+        </div>
+    """, unsafe_allow_html=True)
 
-st.markdown("""
-    <style>
-    /* Oculta o botão de recolher da sidebar e todos seus elementos */
-    div[data-testid="stSidebarCollapseButton"],
-    button[data-testid="stBaseButton-headerNoPadding"],
-    span.st-emotion-cache-189uypx.e1t4gh342,
-    span.st-emotion-cache-pd6qx2.ejhh0er0 {
-        display: none !important;
-        visibility: hidden !important;
-        position: absolute !important;
-        top: -9999px !important;
-        left: -9999px !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-        z-index: -1 !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-
-
-# 🖼️ Função para exibir foto do usuário
-def exibir_foto(caminho, sidebar=False):
+def exibir_foto(caminho):
     if os.path.exists(caminho):
-        if sidebar:
-            st.sidebar.image(caminho, width=150)
-        else:
-            st.image(caminho, width=150)
+        st.image(caminho, width=150)
     else:
-        if sidebar:
-            st.sidebar.image("icones/padrao.png", width=150)
-        else:
-            st.image("icones/padrao.png", width=150)
+        st.image("icones/padrao.png", width=150)
 
 # 👥 Usuários simulados
 usuarios = {
-    "ceo_user": {"senha": "123", "cargo": "CEO", "nome": "Carlos", "foto": "ceo.png", "admissao": "01/01/2015", "funcionarios": 120},
-    "diretor_user": {"senha": "456", "cargo": "DIRETOR", "nome": "Fernanda", "foto": "diretor.png", "admissao": "15/03/2016", "funcionarios": 80},
-    "gerente_user": {"senha": "789", "cargo": "GERENTE", "nome": "Samuel David Veiga", "foto": "gerente.png", "admissao": "01/07/2008", "funcionarios": 360},
-    "coord_user": {"senha": "abc", "cargo": "COORDENADOR", "nome": "Luciana", "foto": "coord.png", "admissao": "20/09/2019", "funcionarios": 15},
-    "sup_user": {"senha": "def", "cargo": "SUPERVISOR", "nome": "Rafael", "foto": "sup.png", "admissao": "05/11/2020", "funcionarios": 8},
-    "cop_user": {"senha": "ghi", "cargo": "OPERADOR COP", "nome": "Ana", "foto": "cop.png", "admissao": "12/01/2022", "funcionarios": 0},
+    "ceo_user": {"senha": "123", "cargo": "CEO", "nome": "Carlos", "foto": "ceo.png"},
+    "diretor_user": {"senha": "456", "cargo": "DIRETOR", "nome": "Fernanda", "foto": "diretor.png"},
+    "gerente_user": {"senha": "789", "cargo": "GERENTE", "nome": "Samuel David Veiga", "foto": "gerente.png"},
+    "coord_user": {"senha": "abc", "cargo": "COORDENADOR", "nome": "Luciana", "foto": "coord.png"},
+    "sup_user": {"senha": "def", "cargo": "SUPERVISOR", "nome": "Rafael", "foto": "sup.png"},
+    "cop_user": {"senha": "ghi", "cargo": "OPERADOR", "nome": "Ana", "foto": "cop.png"},
 }
 
-# 🔗 Relatórios Power BI simulados
-powerbi_links = {
-    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9",
-    "Certificado": "https://app.powerbi.com/view?r=eyJrIjoiCERTIFICADO_ID",
-    "LOG VT": "https://app.powerbi.com/view?r=eyJrIjoiLOGVT_ID",
-    "Eficiência": "https://app.powerbi.com/view?r=eyJrIjoiEFICIENCIA_ID",
-    "Produtividade": "https://app.powerbi.com/view?r=eyJrIjoiPRODUTIVIDADE_ID",
-    "Pontuação": "https://app.powerbi.com/view?r=eyJrIjoiPONTUACAO_ID",
-    "MESH": "https://app.powerbi.com/view?r=eyJrIjoiMESH_ID",
-    "Rota Inicial": "https://app.powerbi.com/view?r=eyJrIjoiROTA_INICIAL_ID",
-    "Rota Final": "https://app.powerbi.com/view?r=eyJrIjoiROTA_FINAL_ID",
-    "Faturamento Instalação": "https://app.powerbi.com/view?r=eyJrIjoiFAT_INST_ID",
-    "Faturamento Manutenção": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MAN_ID",
-    "Desconto de revisita": "https://app.powerbi.com/view?r=eyJrIjoiDESCONTO_ID",
-    "Faturamento MDU": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MDU_ID",
-    "Faturamento Vendas": "https://app.powerbi.com/view?r=eyJrIjoiFAT_VENDAS_ID",
-    "Produção por equipe": "https://app.powerbi.com/view?r=eyJrIjoiPROD_EQUIPE_ID",
-    "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
-    "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID",
-    "geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
-    }
+hierarquia = ["OPERADOR", "SUPERVISOR", "COORDENADOR", "GERENTE", "DIRETOR", "CEO"]
 
-# 🎨 Fundo
+def pode_ver(cargo_atual, cargo_registro):
+    return hierarquia.index(cargo_atual.upper()) > hierarquia.index(cargo_registro.upper())
+
 set_background("icones/Painel_power_point.png")
+show_logo("icones/LOGO_MVVS_COLOR.png")
 
-# 🔐 Controle de sessão
 if "logado" not in st.session_state:
     st.session_state.logado = False
 
-# 🔐 Tela de login
 if not st.session_state.logado:
     st.markdown("<h1 style='text-align: center;'>PAINEL GERENCIAL</h1>", unsafe_allow_html=True)
     st.markdown("### 🔐 Login de Acesso")
@@ -202,94 +74,172 @@ if not st.session_state.logado:
         else:
             st.error("❌ Usuário ou senha incorretos.")
 
-# 👤 Página após login
-else:
-    dados = usuarios[st.session_state.usuario]
-    cargo = dados["cargo"]
-    nome = dados["nome"]
+# 🔧 Indicadores onde valores menores são melhores
+indicadores_bom_para_baixo = [
+    "1º Trabalho", "Quebra de Agenda", "Quebra Qualificada", "Revisita",
+    "Certidão Validado Com falha", "Serviço não realizado", "Serviço realizado, sem Resolução"
+]
 
-    # 👤 Sidebar com logo, foto e saudação
-    with st.sidebar:
-        st.image("icones/LOGO_MVVS_COLOR.png", width=120)
-        st.markdown("## 👤 Usuário")
-        exibir_foto(f"icones/{dados['foto']}", sidebar=True)
-        st.success(f"Bem-vindo, {nome}!")
-        st.markdown("## 📁 Relatórios Disponíveis")
+# 🔧 Função auxiliar para verificar se está fora da meta
+def esta_fora_da_meta(item):
+    if item["Indicador"] in indicadores_bom_para_baixo:
+        return float(item["Nota Atual"]) > float(item["Meta"])
+    else:
+        return float(item["Nota Atual"]) < float(item["Meta"])
 
-        # 📁 Menu lateral com relatórios
-        relatorios = {
-            "📊 Indicadores": {
-                "📈 Hierarquia": "Hierarquia",
-                "🎓 Certificado": "Certificado",
-                "🚌 LOG VT": "LOG VT",
-                "⚙️ Eficiência": "Eficiência",
-                "📊 Produtividade": "Produtividade",
-                "🏅 Pontuação": "Pontuação",
-                "🧩 MESH": "MESH",
-                "🧭 Rota Inicial": "Rota Inicial",
-                "🚩 Rota Final": "Rota Final"
-            },
-            "💰 Financeiro": {
-                "🏗️ Faturamento Instalação": "Faturamento Instalação",
-                "🔧 Faturamento Manutenção": "Faturamento Manutenção",
-                "💸 Desconto de revisita": "Desconto de revisita",
-                "🏢 Faturamento MDU": "Faturamento MDU",
-                        "🛒 Faturamento Vendas": "Faturamento Vendas"
-        } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
-        "⚙️ Processos Operacionais": {
-            "📝 Realizar IVM": "Realizar IVM",
-            "🚨 Processo disciplinar": "Processo disciplinar"
-            
-        }
-            }  # fim do dicionário de relatórios
+# 🔧 Cria o CSV vazio se não existir
+if not os.path.exists(caminho_csv):
+    colunas = ["Indicador", "Fato", "Causas", "Ações", "Mês", "Supervisor", "Cargo Supervisor", "Tipo", "Nota Atual", "Meta", "Evidencias"]
+    pd.DataFrame(columns=colunas).to_csv(caminho_csv, index=False)
 
-        # 🔘 Lista única de opções
-        opcoes = []
-        for categoria, itens in relatorios.items():
-            if itens:
-                opcoes.append(f"— {categoria} —")
-                for label, chave in itens.items():
-                    opcoes.append(label)
+pagina = st.sidebar.radio("Navegar para:", ["Preenchimento FCA", "Apresentação"])
+meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
 
-        # 🔘 Seleção única
-        selecionado_label = st.radio("Selecione o relatório:", opcoes)
+indicadores = [
+    {"Indicador": "1º Trabalho", "Instalacao": 20, "Manutencao": 30},
+    {"Indicador": "Aderência na URA", "Instalacao": 90, "Manutencao": 90},
+    {"Indicador": "Baixa TOA", "Instalacao": 95, "Manutencao": 95},
+    {"Indicador": "Com Geolocalização", "Instalacao": 90, "Manutencao": 90},
+    {"Indicador": "Geolocalização Com Padrão", "Instalacao": 90, "Manutencao": 90},
+    {"Indicador": "Inspeções Conformes", "Instalacao": 85, "Manutencao": None},
+    {"Indicador": "Inspeções Realizadas", "Instalacao": 35, "Manutencao": None},
+    {"Indicador": "NR 35", "Instalacao": 99, "Manutencao": None},
+    {"Indicador": "O.S Digital", "Instalacao": 98, "Manutencao": None},
+    {"Indicador": "Produtividade", "Instalacao": 2.5, "Manutencao": 6},
+    {"Indicador": "Quebra de Agenda", "Instalacao": 25, "Manutencao": 15},
+    {"Indicador": "Quebra Qualificada", "Instalacao": 7, "Manutencao": 6},
+    {"Indicador": "Revisita", "Instalacao": 7, "Manutencao": 7},
+    {"Indicador": "TEC1", "Instalacao": 96, "Manutencao": 97},
+    {"Indicador": "Técnico Consultivo", "Instalacao": 2.5, "Manutencao": 2.5},
+    {"Indicador": "Recomendação MESH", "Instalacao": None, "Manutencao": 90},
+    {"Indicador": "Bandsteering", "Instalacao": 90, "Manutencao": None},
+    {"Indicador": "Certidão Atendimento", "Instalacao": 90, "Manutencao": 90},
+    {"Indicador": "Certidão Validado Com falha", "Instalacao": 20, "Manutencao": 20},
+    {"Indicador": "%Blindagem", "Instalacao": None, "Manutencao": 90},
+    {"Indicador": "% Avaliação", "Instalacao": 15, "Manutencao": 15},
+    {"Indicador": "TNPS Jornada", "Instalacao": 75, "Manutencao": 75},
+    {"Indicador": "Serviço não realizado", "Instalacao": 0.3, "Manutencao": 0.3},
+    {"Indicador": "Serviço realizado, sem Resolução", "Instalacao": 7, "Manutencao": 7}
+]
+df_base = pd.DataFrame(indicadores)
 
-        # 🔍 Mapeia o item selecionado para a chave do relatório
-        for categoria, itens in relatorios.items():
-            if selecionado_label in itens:
-                selecionado = itens[selecionado_label]
-                break
-        else:
-            selecionado = "geral"
+cargo = usuarios[st.session_state.usuario]["cargo"]
+nome = usuarios[st.session_state.usuario]["nome"]
 
-        # 🚪 Botão de logout
-        st.markdown("---")
-        if st.button("🔒 Sair"):
-            st.session_state.logado = False
-            st.experimental_rerun()
+if pagina == "Preenchimento FCA":
+    st.title("📋 Preenchimento FCA dos Indicadores")
+    mes_ref = st.selectbox("📅 Mês de referência", meses)
+    tipo = st.selectbox("🔧 Tipo de operação", ["Instalação", "Manutenção"])
+    coluna_meta = "Instalacao" if tipo == "Instalação" else "Manutencao"
 
-    # 📈 Exibe o relatório correspondente no corpo principal
-    st.markdown(f"### 📊 Relatório: {selecionado}")
-    st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+    df_filtrado = df_base[df_base[coluna_meta].notnull()].copy()
+    notas = []
+    metas = []
 
+    for i, row in df_filtrado.iterrows():
+        meta = row[coluna_meta]
+        nota = st.number_input(f"{row['Indicador']} (Meta: {meta})", min_value=0.0, value=0.0, step=0.1, key=f"nota_{i}")
+        notas.append(nota)
+        metas.append(meta)
 
+    df_filtrado["Meta"] = metas
+    df_filtrado["Nota Atual"] = notas
+    df_filtrado["Status"] = df_filtrado.apply(
+        lambda row: "Dentro da Meta" if not esta_fora_da_meta(row) else "Fora da Meta",
+        axis=1
+    )
+    st.dataframe(df_filtrado[["Indicador", "Meta", "Nota Atual", "Status"]])
 
+    st.subheader("🧠 FCA - Fato, Causa, Ação + Evidências")
+    fca_data = []
 
+    for i, row in df_filtrado.iterrows():
+        if row["Status"] == "Fora da Meta":
+            st.markdown(f"### {row['Indicador']}")
+            fato = st.text_area(f"Fato ({row['Indicador']})", key=f"fato_{i}")
+            causas = st.text_area(f"Causas separadas por vírgula ({row['Indicador']})", key=f"causa_{i}")
+            acoes = st.text_area(f"Ações separadas por vírgula ({row['Indicador']})", key=f"acao_{i}")
+            evid1 = st.file_uploader(f"Evidência 1 - {row['Indicador']}", type=["png", "jpg", "jpeg"], key=f"evid1_{i}")
+            evid2 = st.file_uploader(f"Evidência 2 - {row['Indicador']}", type=["png", "jpg", "jpeg"], key=f"evid2_{i}")
 
+            fca_data.append({
+                "Indicador": row["Indicador"],
+                "Fato": fato,
+                "Causas": [c.strip() for c in causas.split(",") if c.strip()],
+                "Ações": [a.strip() for a in acoes.split(",") if a.strip()],
+                "Evidencias": [evid1, evid2],
+                "Mês": mes_ref,
+                "Supervisor": nome,
+                "Cargo Supervisor": cargo,
+                "Tipo": tipo,
+                "Nota Atual": row["Nota Atual"],
+                "Meta": row["Meta"]
+            })
 
+    if st.button("Salvar FCA"):
+        df_novo = pd.DataFrame(fca_data).drop(columns=["Evidencias"], errors="ignore")
+        df_existente = pd.read_csv(caminho_csv)
+        df_final = pd.concat([df_existente, df_novo], ignore_index=True)
+        df_final.to_csv(caminho_csv, index=False)
+        st.success("✅ FCA salvo com sucesso!")
+elif pagina == "Apresentação":
+    st.title("🎯 Apresentação dos Indicadores e FCA")
 
+    if st.button("🗑️ Apagar todos os registros anteriores"):
+        os.remove(caminho_csv)
+        pd.DataFrame(columns=["Indicador", "Fato", "Causas", "Ações", "Mês", "Supervisor", "Cargo Supervisor", "Tipo", "Nota Atual", "Meta", "Evidencias"]).to_csv(caminho_csv, index=False)
+        st.success("Todos os registros foram apagados.")
 
+    historico_df = pd.read_csv(caminho_csv)
+    historico = historico_df.to_dict(orient="records")
 
+    mes_selecionado = st.selectbox("📅 Selecione o mês", meses)
+    tipo_filtro = st.selectbox("🔧 Tipo de operação", ["Instalação", "Manutenção"])
+    supervisor_filtro = st.text_input("🔍 Filtrar por nome do responsável (opcional)")
 
+    dados_filtrados = [
+        item for item in historico
+        if item["Mês"] == mes_selecionado
+        and item["Tipo"] == tipo_filtro
+        and pode_ver(cargo, item.get("Cargo Supervisor", ""))
+        and (supervisor_filtro.lower() in item["Supervisor"].lower() if supervisor_filtro else True)
+        and esta_fora_da_meta(item)
+    ]
 
+    if not dados_filtrados:
+        st.info("Nenhum indicador fora da meta para os filtros selecionados.")
+    else:
+        for idx, item in enumerate(dados_filtrados):
+            st.markdown(f"### {item['Indicador']}")
+            col1, col2, col3, col4 = st.columns(4)
+            col1.markdown(f"**Fato:** {item['Fato']}")
+            col2.markdown(f"**Causa:** {', '.join(item['Causas'])}")
+            col3.markdown(f"**Ação:** {', '.join(item['Ações'])}")
+            col4.markdown(f"**Meta:** {item['Meta']}<br>**Nota:** {item['Nota Atual']}", unsafe_allow_html=True)
 
+            # Pareto de Causas
+            causas = item.get("Causas", [])
+            if isinstance(causas, list) and causas:
+                causas_df = pd.DataFrame({"Causa": causas})
+                causas_df["Contagem"] = 1
+                causas_agg = causas_df.groupby("Causa").count().reset_index().sort_values("Contagem", ascending=False)
+                fig_causa = px.bar(causas_agg, x="Causa", y="Contagem", title="Pareto de Causas")
+                st.plotly_chart(fig_causa, use_container_width=True, key=f"causa_{idx}")
 
+            # Pareto de Ações
+            acoes = item.get("Ações", [])
+            if isinstance(acoes, list) and acoes:
+                acoes_df = pd.DataFrame({"Ação": acoes})
+                acoes_df["Contagem"] = 1
+                acoes_agg = acoes_df.groupby("Ação").count().reset_index().sort_values("Contagem", ascending=False)
+                fig_acao = px.bar(acoes_agg, x="Ação", y="Contagem", title="Pareto de Ações")
+                st.plotly_chart(fig_acao, use_container_width=True, key=f"acao_{idx}")
 
+            st.markdown("📸 **EVIDÊNCIA (FOTO 1)**")
+            st.markdown("📸 **EVIDÊNCIA (FOTO 2)**")
+            st.markdown("---")
 
-
-
-
-
-
-
-
+        # Exportar CSV
+        df_export = pd.DataFrame(dados_filtrados).drop(columns=["Evidencias"], errors="ignore")
+        csv = df_export.to_csv(index=False).encode("utf-8")
+        st.download_button("📥 Baixar FCA em CSV", data=csv, file_name=f"fca_{mes_selecionado}_{tipo_filtro}.csv", mime="text/csv")
