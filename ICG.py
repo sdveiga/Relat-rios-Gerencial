@@ -104,11 +104,13 @@ if menu == "📊 Indicadores":
 
     aba_fca = st.radio("Escolha uma opção:", ["🔧 Preenchimento FCA", "📈 Apresentação FCA"], horizontal=True)
 
-    if aba_fca == "🔧 Preenchimento FCA":
-        # 👉 Aqui entra a Parte 3: Preenchimento FCA
+if aba_fca == "🔧 Preenchimento FCA":
+    st.write("🔧 Área de preenchimento FCA será exibida aqui.")
+    # Aqui você pode colar a Parte 3 completa
 
-    elif aba_fca == "📈 Apresentação FCA":
-        # 👉 Aqui entra a Parte 4: Apresentação FCA
+elif aba_fca == "📈 Apresentação FCA":
+    st.write("📈 Área de apresentação FCA será exibida aqui.")
+    # Aqui você pode colar a Parte 4 completa
 
 elif menu == "🔒 Sair":
     st.session_state.logado = False
@@ -279,4 +281,5 @@ elif menu == "🔒 Sair":
             df_export = pd.DataFrame(dados_filtrados).drop(columns=["Evidencias"], errors="ignore")
             csv = df_export.to_csv(index=False).encode("utf-8")
             st.download_button("📥 Baixar FCA em CSV", data=csv, file_name=f"fca_{mes_selecionado}_{tipo_filtro}.csv", mime="text/csv")
+
 
