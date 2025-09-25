@@ -5,7 +5,8 @@ import os
 # 🔧 Oculta barra superior e rodapé do Streamlit
 st.markdown("""
     <style>
-
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
 
@@ -194,4 +195,5 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
