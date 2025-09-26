@@ -10,6 +10,25 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+.menu-lateral {
+  background-color: #2c2c2c; /* fundo escuro para contraste */
+  color: white; /* texto branco */
+  padding: 20px;
+  width: 250px;
+  height: 100vh;
+}
+
+.menu-lateral a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.menu-lateral a:hover {
+  color: #ffcc00; /* cor ao passar o mouse */
+}
+
 
 # 🎨 Estiliza a sidebar com fundo cinza escuro
 st.markdown("""
@@ -195,5 +214,6 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
