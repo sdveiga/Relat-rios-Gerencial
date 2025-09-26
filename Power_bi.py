@@ -15,7 +15,11 @@ st.markdown("""
     <style>
     /* 🔒 Oculta o botão de recolher a sidebar */
     [data-testid="stSidebarCollapseControl"] {
-        display: none !important;
+        visibility: hidden !important;
+        height: 0px !important;
+        width: 0px !important;
+        overflow: hidden !important;
+        position: absolute !important;
     }
 
     /* 🎨 Estiliza a sidebar */
@@ -27,7 +31,7 @@ st.markdown("""
     /* 🧼 Aplica estilo global aos elementos da sidebar */
     [data-testid="stSidebar"] * {
         color: white !important;
-        text-transform: none !important; /* remove caixa alta */
+        text-transform: none !important;
         font-family: 'Segoe UI', sans-serif !important;
     }
 
@@ -56,6 +60,7 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -225,6 +230,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
