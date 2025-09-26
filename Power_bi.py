@@ -11,32 +11,32 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
 st.markdown("""
     <style>
-    /* Oculta o botão de recolher a sidebar */
+    /* 🔒 Oculta o botão de recolher a sidebar */
     [data-testid="stSidebarCollapseControl"] {
         display: none !important;
     }
 
-    /* Estiliza a sidebar */
+    /* 🎨 Estiliza a sidebar */
     [data-testid="stSidebar"] {
         background-color: #2f2f2f;
         color: white;
     }
 
-    /* Aplica estilo global aos elementos da sidebar */
+    /* 🧼 Aplica estilo global aos elementos da sidebar */
     [data-testid="stSidebar"] * {
         color: white !important;
         text-transform: none !important; /* remove caixa alta */
+        font-family: 'Segoe UI', sans-serif !important;
     }
 
-    /* Espaçamento para imagens */
+    /* 🖼️ Espaçamento para imagens */
     [data-testid="stSidebar"] .stImage {
         margin-bottom: 20px;
     }
 
-    /* Estiliza botões */
+    /* 🧵 Estiliza botões */
     [data-testid="stSidebar"] button {
         color: white !important;
         background-color: #444 !important;
@@ -44,7 +44,7 @@ st.markdown("""
         text-transform: none !important;
     }
 
-    /* Estiliza inputs, selects, textareas e labels */
+    /* 🧩 Estiliza inputs, selects, textareas e labels */
     [data-testid="stSidebar"] label,
     [data-testid="stSidebar"] input,
     [data-testid="stSidebar"] select,
@@ -225,6 +225,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
