@@ -11,26 +11,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+import streamlit as st
+import streamlit.components.v1 as components
+
+# Estilos CSS
 st.markdown("""
     <style>
-    /* Oculta o botão de recolher a sidebar */
-    [data-testid="stSidebarCollapseControl"],
-    [data-testid="stSidebarCollapseControl"] * {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-        position: absolute !important;
-    }
-
-    /* Oculta diretamente o ícone do botão */
-    [data-testid="stIconMaterial"][class*="keyboard_double_arrow_left"] {
-        display: none !important;
-        visibility: hidden !important;
-    }
-
-    /* Estiliza a sidebar */
     [data-testid="stSidebar"] {
         background-color: #2f2f2f;
         color: white;
@@ -64,6 +50,19 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
+# Script JavaScript para remover o botão
+components.html("""
+    <script>
+    const interval = setInterval(() => {
+        const collapseBtn = document.querySelector('[data-testid="stSidebarCollapseControl"]');
+        if (collapseBtn) {
+            collapseBtn.remove();
+            clearInterval(interval);
+        }
+    }, 100);
+    </script>
+""", height=0)
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -233,6 +232,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
