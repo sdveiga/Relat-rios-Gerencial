@@ -11,73 +11,21 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-    <style>
-    /* 🔒 Oculta o botão de recolher da sidebar */
-    [data-testid="stSidebarCollapseControl"],
-    [data-testid="stSidebarCollapseControl"] * {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-        position: absolute !important;
-    }
+import streamlit.components.v1 as components
 
-    /* 🔒 Oculta o ícone específico "keyboard_double_arrow_left" */
-    span.st-emotion-cache-pd6qx2.ejhh0er0 {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-        position: absolute !important;
-    }
+components.html("""
+    <script>
+    const interval = setInterval(() => {
+        const icon = document.querySelector('span[data-testid="stIconMaterial"]');
+        if (icon && icon.textContent.includes("keyboard_double_arrow_left")) {
+            icon.parentElement.style.display = "none";
+            icon.style.display = "none";
+            clearInterval(interval);
+        }
+    }, 100);
+    </script>
+""", height=0)
 
-    /* 🔒 Oculta o contêiner externo do ícone */
-    span.st-emotion-cache-189uypx.e1t4gh342 {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-        position: absolute !important;
-    }
-
-    /* 🎨 Estiliza a sidebar */
-    [data-testid="stSidebar"] {
-        background-color: #2f2f2f;
-        color: white;
-    }
-
-    [data-testid="stSidebar"] * {
-        color: white !important;
-        text-transform: none !important;
-        font-family: 'Segoe UI', sans-serif !important;
-    }
-
-    [data-testid="stSidebar"] .stImage {
-        margin-bottom: 20px;
-    }
-
-    [data-testid="stSidebar"] button {
-        color: white !important;
-        background-color: #444 !important;
-        border: none;
-        text-transform: none !important;
-    }
-
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] input,
-    [data-testid="stSidebar"] select,
-    [data-testid="stSidebar"] textarea {
-        color: white !important;
-        background-color: #3a3a3a !important;
-        border: 1px solid #555 !important;
-        text-transform: none !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 
 # 🔧 Função para definir imagem de fundo
@@ -248,6 +196,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
