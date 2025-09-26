@@ -13,39 +13,31 @@ st.markdown("""
 
 
 # 🎨 Estiliza a sidebar com fundo cinza escuro
-st.markdown("""
-    <style>
-    [data-testid="stSidebar"] {
-        background-color: #2f2f2f;
-        color: white;
-    }
+[data-testid="stSidebar"] * {
+    color: white !important;
+}
 
-    [data-testid="stSidebar"] * {
-        color: white !important;
-    }
+[data-testid="stSidebar"] .stImage {
+    margin-bottom: 20px;
+}
 
-    [data-testid="stSidebar"] .stImage {
-        margin-bottom: 20px;
-    }
+/* Estiliza botões na sidebar */
+[data-testid="stSidebar"] button {
+    color: white !important;
+    background-color: #444 !important;
+    border: none;
+}
 
-    /* Estiliza botões na sidebar */
-    [data-testid="stSidebar"] button {
-        color: white !important;
-        background-color: #444 !important;
-        border: none;
-    }
-
-    /* Estiliza inputs e labels */
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] input,
-    [data-testid="stSidebar"] select,
-    [data-testid="stSidebar"] textarea {
-        color: white !important;
-        background-color: #3a3a3a !important;
-        border: 1px solid #555 !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
+/* Estiliza inputs e labels */
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] input,
+[data-testid="stSidebar"] select,
+[data-testid="stSidebar"] textarea {
+    color: white !important;
+    background-color: #3a3a3a !important;
+    border: 1px solid #555 !important;
+}
+</style>
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -215,6 +207,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
