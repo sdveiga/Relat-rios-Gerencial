@@ -14,29 +14,37 @@ st.markdown("""
 
 st.markdown("""
     <style>
+    /* Oculta o botão de recolher a sidebar */
+    [data-testid="stSidebarCollapseControl"] {
+        display: none !important;
+    }
+
+    /* Estiliza a sidebar */
     [data-testid="stSidebar"] {
         background-color: #2f2f2f;
         color: white;
     }
 
+    /* Aplica estilo global aos elementos da sidebar */
     [data-testid="stSidebar"] * {
         color: white !important;
         text-transform: none !important; /* remove caixa alta */
     }
 
+    /* Espaçamento para imagens */
     [data-testid="stSidebar"] .stImage {
         margin-bottom: 20px;
     }
 
-    /* Estiliza botões na sidebar */
+    /* Estiliza botões */
     [data-testid="stSidebar"] button {
         color: white !important;
         background-color: #444 !important;
         border: none;
-        text-transform: none !important; /* remove caixa alta dos botões */
+        text-transform: none !important;
     }
 
-    /* Estiliza inputs e labels */
+    /* Estiliza inputs, selects, textareas e labels */
     [data-testid="stSidebar"] label,
     [data-testid="stSidebar"] input,
     [data-testid="stSidebar"] select,
@@ -44,11 +52,10 @@ st.markdown("""
         color: white !important;
         background-color: #3a3a3a !important;
         border: 1px solid #555 !important;
-        text-transform: none !important; /* remove caixa alta dos campos */
+        text-transform: none !important;
     }
     </style>
 """, unsafe_allow_html=True)
-
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -218,6 +225,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
