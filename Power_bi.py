@@ -5,39 +5,41 @@ import os
 # 🔧 Oculta barra superior e rodapé do Streamlit
 st.markdown("""
     <style>
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
+    [data-testid="stSidebar"] {
+        background-color: #2f2f2f;
+        color: white;
+    }
+
+    [data-testid="stSidebar"] * {
+        color: white !important;
+        text-transform: none !important; /* remove caixa alta */
+    }
+
+    [data-testid="stSidebar"] .stImage {
+        margin-bottom: 20px;
+    }
+
+    /* Estiliza botões na sidebar */
+    [data-testid="stSidebar"] button {
+        color: white !important;
+        background-color: #444 !important;
+        border: none;
+        text-transform: none !important; /* remove caixa alta dos botões */
+    }
+
+    /* Estiliza inputs e labels */
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] input,
+    [data-testid="stSidebar"] select,
+    [data-testid="stSidebar"] textarea {
+        color: white !important;
+        background-color: #3a3a3a !important;
+        border: 1px solid #555 !important;
+        text-transform: none !important; /* remove caixa alta dos campos */
+    }
     </style>
 """, unsafe_allow_html=True)
 
-
-
-# 🎨 Estiliza a sidebar com fundo cinza escuro
-[data-testid="stSidebar"] * {
-    color: white !important;
-}
-
-[data-testid="stSidebar"] .stImage {
-    margin-bottom: 20px;
-}
-
-/* Estiliza botões na sidebar */
-[data-testid="stSidebar"] button {
-    color: white !important;
-    background-color: #444 !important;
-    border: none;
-}
-
-/* Estiliza inputs e labels */
-[data-testid="stSidebar"] label,
-[data-testid="stSidebar"] input,
-[data-testid="stSidebar"] select,
-[data-testid="stSidebar"] textarea {
-    color: white !important;
-    background-color: #3a3a3a !important;
-    border: 1px solid #555 !important;
-}
-</style>
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -207,6 +209,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
