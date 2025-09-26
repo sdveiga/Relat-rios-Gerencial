@@ -24,8 +24,8 @@ st.markdown("""
         position: absolute !important;
     }
 
-    /* 🔒 Oculta qualquer ícone material com texto do botão */
-    span[data-testid="stIconMaterial"] {
+    /* 🔒 Oculta o ícone específico "keyboard_double_arrow_left" */
+    span.st-emotion-cache-pd6qx2.ejhh0er0 {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
@@ -34,11 +34,8 @@ st.markdown("""
         position: absolute !important;
     }
 
-    /* 🔒 Oculta qualquer botão flutuante residual */
-    div[class*="st-emotion-cache"][class*="ejhh0er0"],
-    div[class*="st-emotion-cache"][class*="e1f1d6gn2"],
-    span[class*="st-emotion-cache"][class*="ejhh0er0"],
-    span[class*="st-emotion-cache"][class*="p6dz5z"] {
+    /* 🔒 Oculta o contêiner externo do ícone */
+    span.st-emotion-cache-189uypx.e1t4gh342 {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
@@ -81,6 +78,7 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -250,6 +248,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
