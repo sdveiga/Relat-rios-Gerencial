@@ -13,34 +13,39 @@ st.markdown("""
 
 st.markdown("""
     <style>
-    /* 🔒 Oculta o botão de recolher a sidebar */
-    [data-testid="stSidebarCollapseControl"] {
+    /* Oculta o botão de recolher a sidebar */
+    [data-testid="stSidebarCollapseControl"],
+    [data-testid="stSidebarCollapseControl"] * {
+        display: none !important;
         visibility: hidden !important;
-        height: 0px !important;
-        width: 0px !important;
+        height: 0 !important;
+        width: 0 !important;
         overflow: hidden !important;
         position: absolute !important;
     }
 
-    /* 🎨 Estiliza a sidebar */
+    /* Oculta diretamente o ícone do botão */
+    [data-testid="stIconMaterial"][class*="keyboard_double_arrow_left"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* Estiliza a sidebar */
     [data-testid="stSidebar"] {
         background-color: #2f2f2f;
         color: white;
     }
 
-    /* 🧼 Aplica estilo global aos elementos da sidebar */
     [data-testid="stSidebar"] * {
         color: white !important;
         text-transform: none !important;
         font-family: 'Segoe UI', sans-serif !important;
     }
 
-    /* 🖼️ Espaçamento para imagens */
     [data-testid="stSidebar"] .stImage {
         margin-bottom: 20px;
     }
 
-    /* 🧵 Estiliza botões */
     [data-testid="stSidebar"] button {
         color: white !important;
         background-color: #444 !important;
@@ -48,7 +53,6 @@ st.markdown("""
         text-transform: none !important;
     }
 
-    /* 🧩 Estiliza inputs, selects, textareas e labels */
     [data-testid="stSidebar"] label,
     [data-testid="stSidebar"] input,
     [data-testid="stSidebar"] select,
@@ -60,7 +64,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -230,6 +233,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
