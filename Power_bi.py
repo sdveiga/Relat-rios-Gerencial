@@ -10,24 +10,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-.menu-lateral {
-  background-color: #2c2c2c; /* fundo escuro para contraste */
-  color: white; /* texto branco */
-  padding: 20px;
-  width: 250px;
-  height: 100vh;
-}
-
-.menu-lateral a {
-  color: white;
-  text-decoration: none;
-  display: block;
-  margin-bottom: 10px;
-}
-
-.menu-lateral a:hover {
-  color: #ffcc00; /* cor ao passar o mouse */
-}
 
 
 # 🎨 Estiliza a sidebar com fundo cinza escuro
@@ -37,11 +19,30 @@ st.markdown("""
         background-color: #2f2f2f;
         color: white;
     }
-    [data-testid="stSidebar"] .stMarkdown {
-        color: white;
+
+    [data-testid="stSidebar"] * {
+        color: white !important;
     }
+
     [data-testid="stSidebar"] .stImage {
         margin-bottom: 20px;
+    }
+
+    /* Estiliza botões na sidebar */
+    [data-testid="stSidebar"] button {
+        color: white !important;
+        background-color: #444 !important;
+        border: none;
+    }
+
+    /* Estiliza inputs e labels */
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] input,
+    [data-testid="stSidebar"] select,
+    [data-testid="stSidebar"] textarea {
+        color: white !important;
+        background-color: #3a3a3a !important;
+        border: 1px solid #555 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -214,6 +215,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
