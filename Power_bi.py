@@ -13,6 +13,30 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+
+components.html("""
+    <script>
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            const icons = document.querySelectorAll('span[data-testid="stIconMaterial"]');
+            icons.forEach((icon) => {
+                if (icon.textContent.includes("keyboard_double_arrow_left")) {
+                    icon.style.display = "none";
+                    if (icon.parentElement) {
+                        icon.parentElement.style.display = "none";
+                    }
+                }
+            });
+        });
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    </script>
+""", height=0)
+
 # CSS personalizado
 st.markdown("""
     <style>
@@ -253,6 +277,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
