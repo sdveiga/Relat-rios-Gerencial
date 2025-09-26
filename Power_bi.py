@@ -1,113 +1,10 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import base64
 import os
 
-# 🔧 Oculta barra superior e rodapé do Streamlit
-
-st.markdown("""
-    <style>
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    </style>
-""", unsafe_allow_html=True)
-
-
-
-components.html("""
-    <script>
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            const icons = document.querySelectorAll('span[data-testid="stIconMaterial"]');
-            icons.forEach((icon) => {
-                if (icon.textContent.includes("keyboard_double_arrow_left")) {
-                    icon.style.display = "none";
-                    if (icon.parentElement) {
-                        icon.parentElement.style.display = "none";
-                    }
-                }
-            });
-        });
-    });
-
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-    </script>
-""", height=0)
-
-# CSS personalizado
-st.markdown("""
-    <style>
-    /* Oculta botão de recolher e ícones relacionados */
-    [data-testid="stSidebarCollapseControl"],
-    [data-testid="stSidebarCollapseControl"] *,
-    span[data-testid="stIconMaterial"],
-    span[class*="st-emotion-cache-189uypx"],
-    span[class*="st-emotion-cache-pd6qx2"],
-    span[class*="ejhh0er0"],
-    span[class*="e1t4gh342"] {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-        position: absolute !important;
-    }
-
-    /* Estilização da sidebar */
-    [data-testid="stSidebar"] {
-        background-color: #2f2f2f;
-        color: white;
-    }
-
-    [data-testid="stSidebar"] * {
-        color: white !important;
-        text-transform: none !important;
-        font-family: 'Segoe UI', sans-serif !important;
-    }
-
-    [data-testid="stSidebar"] .stImage {
-        margin-bottom: 20px;
-    }
-
-    [data-testid="stSidebar"] button {
-        color: white !important;
-        background-color: #444 !important;
-        border: none;
-        text-transform: none !important;
-    }
-
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] input,
-    [data-testid="stSidebar"] select,
-    [data-testid="stSidebar"] textarea {
-        color: white !important;
-        background-color: #3a3a3a !important;
-        border: 1px solid #555 !important;
-        text-transform: none !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# Script JavaScript para remover o ícone dinamicamente
-components.html("""
-    <script>
-    const interval = setInterval(() => {
-        const icon = document.querySelector('span[data-testid="stIconMaterial"]');
-        if (icon && icon.textContent.includes("keyboard_double_arrow_left")) {
-            icon.style.display = "none";
-            if (icon.parentElement) {
-                icon.parentElement.style.display = "none";
-            }
-            clearInterval(interval);
-        }
-    }, 100);
-    </script>
-""", height=0)
-
-
+# 🔐 Controle de sessão
+if "logado" not in st.session_state:
+    st.session_state.logado = False
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -121,28 +18,7 @@ def set_background(png_file):
             background-position: center;
             color: white;
         }}
-        label {{ color: white !important; }}
-        div.stButton > button:first-child {{
-            background-color: #808080;
-            color: white;
-            border: none;
-            padding: 0.5em 1em;
-            border-radius: 5px;
-        }}
-        div.stButton > button:first-child:hover {{
-            background-color: #696969;
-        }}
         </style>
-    """, unsafe_allow_html=True)
-
-# 🖼️ Função para exibir logo
-def show_logo(png_file):
-    with open(png_file, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode()
-    st.markdown(f"""
-        <div style="position: absolute; top: 10px; right: 10px; z-index: 100;">
-            <img src="data:image/png;base64,{encoded}" width="150">
-        </div>
     """, unsafe_allow_html=True)
 
 # 🖼️ Função para exibir foto do usuário
@@ -154,43 +30,20 @@ def exibir_foto(caminho):
 
 # 👥 Usuários simulados
 usuarios = {
-    "ceo_user": {"senha": "123", "cargo": "CEO", "nome": "Carlos", "foto": "ceo.png", "admissao": "01/01/2015", "funcionarios": 120},
-    "diretor_user": {"senha": "456", "cargo": "DIRETOR", "nome": "Fernanda", "foto": "diretor.png", "admissao": "15/03/2016", "funcionarios": 80},
-    "gerente_user": {"senha": "789", "cargo": "GERENTE", "nome": "Samuel David Veiga", "foto": "gerente.png", "admissao": "01/07/2008", "funcionarios": 360},
-    "coord_user": {"senha": "abc", "cargo": "COORDENADOR", "nome": "Luciana", "foto": "coord.png", "admissao": "20/09/2019", "funcionarios": 15},
-    "sup_user": {"senha": "def", "cargo": "SUPERVISOR", "nome": "Rafael", "foto": "sup.png", "admissao": "05/11/2020", "funcionarios": 8},
-    "cop_user": {"senha": "ghi", "cargo": "OPERADOR COP", "nome": "Ana", "foto": "cop.png", "admissao": "12/01/2022", "funcionarios": 0},
+    "ceo_user": {"senha": "123", "cargo": "CEO", "nome": "Carlos", "foto": "ceo.png"},
+    "gerente_user": {"senha": "789", "cargo": "GERENTE", "nome": "Samuel David Veiga", "foto": "gerente.png"},
 }
 
-# 🔗 Relatórios Power BI simulados
+# 🔗 Relatórios simulados
 powerbi_links = {
-    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9",
+    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiHIERARQUIA_ID",
     "Certificado": "https://app.powerbi.com/view?r=eyJrIjoiCERTIFICADO_ID",
     "LOG VT": "https://app.powerbi.com/view?r=eyJrIjoiLOGVT_ID",
-    "Eficiência": "https://app.powerbi.com/view?r=eyJrIjoiEFICIENCIA_ID",
-    "Produtividade": "https://app.powerbi.com/view?r=eyJrIjoiPRODUTIVIDADE_ID",
-    "Pontuação": "https://app.powerbi.com/view?r=eyJrIjoiPONTUACAO_ID",
-    "MESH": "https://app.powerbi.com/view?r=eyJrIjoiMESH_ID",
-    "Rota Inicial": "https://app.powerbi.com/view?r=eyJrIjoiROTA_INICIAL_ID",
-    "Rota Final": "https://app.powerbi.com/view?r=eyJrIjoiROTA_FINAL_ID",
-    "Faturamento Instalação": "https://app.powerbi.com/view?r=eyJrIjoiFAT_INST_ID",
-    "Faturamento Manutenção": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MAN_ID",
-    "Desconto de revisita": "https://app.powerbi.com/view?r=eyJrIjoiDESCONTO_ID",
-    "Faturamento MDU": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MDU_ID",
-    "Faturamento Vendas": "https://app.powerbi.com/view?r=eyJrIjoiFAT_VENDAS_ID",
-    "Produção por equipe": "https://app.powerbi.com/view?r=eyJrIjoiPROD_EQUIPE_ID",
-    "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
-    "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID",
-    "geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
+    "geral": "https://app.powerbi.com/view?r=eyJrIjoiGERAL_ID"
 }
 
-# 🎨 Fundo e logo
+# 🎨 Fundo
 set_background("icones/Painel_power_point.png")
-
-
-# 🔐 Controle de sessão
-if "logado" not in st.session_state:
-    st.session_state.logado = False
 
 # 🔐 Tela de login
 if not st.session_state.logado:
@@ -209,95 +62,32 @@ if not st.session_state.logado:
 # 👤 Página após login
 else:
     dados = usuarios[st.session_state.usuario]
-    cargo = dados["cargo"]
     nome = dados["nome"]
+    cargo = dados["cargo"]
 
-    # 👤 Sidebar com foto e saudação
-    with st.sidebar:
-        st.image("icones/LOGO_MVVS_COLOR.png", width=120)
-        st.markdown("## 👤 Usuário")
+    # 🔧 Layout com colunas: sidebar + conteúdo
+    col1, col2 = st.columns([1, 4])
+
+    with col1:
+        st.markdown(f"""
+            <div style="background-color: #2f2f2f; padding: 20px; height: 100vh;">
+                <img src="icones/LOGO_MVVS_COLOR.png" width="120">
+                <h3 style="color: white;">👤 Usuário</h3>
+        """, unsafe_allow_html=True)
         exibir_foto(f"icones/{dados['foto']}")
-        st.success(f"Bem-vindo, {nome}!")
+        st.markdown(f"<p style='color:white;'>Bem-vindo, {nome}!</p>", unsafe_allow_html=True)
+        st.markdown("<hr style='border-color: #555;'>", unsafe_allow_html=True)
 
-        st.markdown("## 📁 Relatórios Disponíveis")
+        st.markdown("<h4 style='color:white;'>📁 Relatórios</h4>", unsafe_allow_html=True)
+        relatorio = st.radio("Selecione o relatório:", ["Hierarquia", "Certificado", "LOG VT"])
 
+        st.markdown("<hr style='border-color: #555;'>", unsafe_allow_html=True)
+        if st.button("🔒 Sair"):
+            st.session_state.logado = False
+            st.experimental_rerun()
 
-
-    # 📁 Menu lateral com relatórios
-    relatorios = {
-        "📊 Indicadores": {
-            "📈 Hierarquia": "Hierarquia",
-            "🎓 Certificado": "Certificado",
-            "🚌 LOG VT": "LOG VT",
-            "⚙️ Eficiência": "Eficiência",
-            "📊 Produtividade": "Produtividade",
-            "🏅 Pontuação": "Pontuação",
-            "🧩 MESH": "MESH",
-            "🧭 Rota Inicial": "Rota Inicial",
-            "🚩 Rota Final": "Rota Final"
-        },
-        "💰 Financeiro": {
-            "🏗️ Faturamento Instalação": "Faturamento Instalação",
-            "🔧 Faturamento Manutenção": "Faturamento Manutenção",
-            "💸 Desconto de revisita": "Desconto de revisita",
-            "🏢 Faturamento MDU": "Faturamento MDU",
-                        "🛒 Faturamento Vendas": "Faturamento Vendas"
-        } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
-        "⚙️ Processos Operacionais": {
-            "📝 Realizar IVM": "Realizar IVM",
-            "🚨 Processo disciplinar": "Processo disciplinar"
-        }
-    }
-
-    # 🔘 Lista única de opções
-    opcoes = []
-    for categoria, itens in relatorios.items():
-        if itens:
-            opcoes.append(f"— {categoria} —")
-            for label, chave in itens.items():
-                opcoes.append(label)
-
-    # 🔘 Seleção única
-    selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
-
-    # 🔍 Mapeia o item selecionado para a chave do relatório
-    for categoria, itens in relatorios.items():
-        if selecionado_label in itens:
-            selecionado = itens[selecionado_label]
-            break
-    else:
-        selecionado = "geral"
-
-    # 📈 Exibe o relatório correspondente
-    st.markdown(f"### 📊 Relatório: {selecionado}")
-    st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
-
-    # 🚪 Botão de logout
-    st.sidebar.markdown("---")
-    if st.sidebar.button("🔒 Sair"):
-        st.session_state.logado = False
-        st.experimental_rerun()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    with col2:
+        st.markdown(f"### 📊 Relatório: {relatorio}")
+        st.components.v1.iframe(powerbi_links.get(relatorio, powerbi_links["geral"]), height=600, scrolling=True)
 
 
