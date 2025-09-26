@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import base64
 import os
 
@@ -11,26 +12,18 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-import streamlit.components.v1 as components
 
-components.html("""
-    <script>
-    const interval = setInterval(() => {
-        const icon = document.querySelector('span[data-testid="stIconMaterial"]');
-        if (icon && icon.textContent.includes("keyboard_double_arrow_left")) {
-            icon.parentElement.style.display = "none";
-            icon.style.display = "none";
-            clearInterval(interval);
-        }
-    }, 100);
-    </script>
-""", height=0)
-
+# CSS personalizado
 st.markdown("""
     <style>
-    /* 🔒 Oculta o botão de recolher da sidebar */
+    /* Oculta botão de recolher e ícones relacionados */
     [data-testid="stSidebarCollapseControl"],
-    [data-testid="stSidebarCollapseControl"] * {
+    [data-testid="stSidebarCollapseControl"] *,
+    span[data-testid="stIconMaterial"],
+    span[class*="st-emotion-cache-189uypx"],
+    span[class*="st-emotion-cache-pd6qx2"],
+    span[class*="ejhh0er0"],
+    span[class*="e1t4gh342"] {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
@@ -39,27 +32,7 @@ st.markdown("""
         position: absolute !important;
     }
 
-    /* 🔒 Oculta o ícone específico "keyboard_double_arrow_left" */
-    span.st-emotion-cache-pd6qx2.ejhh0er0 {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-        position: absolute !important;
-    }
-
-    /* 🔒 Oculta o contêiner externo do ícone */
-    span.st-emotion-cache-189uypx.e1t4gh342 {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-        position: absolute !important;
-    }
-
-    /* 🎨 Estiliza a sidebar */
+    /* Estilização da sidebar */
     [data-testid="stSidebar"] {
         background-color: #2f2f2f;
         color: white;
@@ -93,6 +66,24 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
+# Script JavaScript para remover o ícone dinamicamente
+components.html("""
+    <script>
+    const interval = setInterval(() => {
+        const icon = document.querySelector('span[data-testid="stIconMaterial"]');
+        if (icon && icon.textContent.includes("keyboard_double_arrow_left")) {
+            icon.style.display = "none";
+            if (icon.parentElement) {
+                icon.parentElement.style.display = "none";
+            }
+            clearInterval(interval);
+        }
+    }, 100);
+    </script>
+""", height=0)
+
+
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -262,6 +253,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
