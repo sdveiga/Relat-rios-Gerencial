@@ -167,6 +167,7 @@ else:
         st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
 
     # 📋 Visão ICG
+
     elif selecionado_label == "📋 ICG":
         st.markdown("### 📋 Indicadores de Controle de Gestão (ICG)")
 
@@ -175,30 +176,29 @@ else:
             "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         ])
-        
         nota = st.number_input("📈 Nota", min_value=0.0, max_value=10.0, step=0.1)
 
-st.markdown("#### 🗓️ Acompanhamento Semanal por Equipe")
+        st.markdown("#### 🗓️ Acompanhamento Semanal por Equipe")
 
-# Cabeçalhos da tabela
-cols = st.columns([2, 3, 1, 1, 1, 1, 1])
-cols[0].markdown("**Indicador**")
-cols[1].markdown("**Equipe**")
-for i in range(5):
-    cols[i+2].markdown(f"**S{i+1}**")  # Semana 1 a 5
+        # Cabeçalhos da tabela
+        cols = st.columns([2, 3, 1, 1, 1, 1, 1])
+        cols[0].markdown("**Indicador**")
+        cols[1].markdown("**Equipe**")
+        for i in range(5):
+            cols[i+2].markdown(f"**S{i+1}**")  # Semana 1 a 5
 
-# Linhas da tabela (10 equipes)
-acompanhamento = []
-for i in range(10):
-    linha = st.columns([2, 3, 1, 1, 1, 1, 1])
-    indicador = linha[0].text_input(f"Indicador {i+1}", key=f"indicador_{i}")
-    equipe = linha[1].text_input(f"Equipe {i+1}", key=f"equipe_{i}")
-    notas = [linha[j+2].number_input(f"S{i+1}_{j+1}", min_value=0.0, max_value=10.0, step=0.1, key=f"nota_{i}_{j}") for j in range(5)]
-    acompanhamento.append({
-        "indicador": indicador,
-        "equipe": equipe,
-        "notas": notas
-    })
+        # Linhas da tabela (10 equipes)
+        acompanhamento = []
+        for i in range(10):
+            linha = st.columns([2, 3, 1, 1, 1, 1, 1])
+            indicador_eq = linha[0].text_input(f"Indicador {i+1}", key=f"indicador_{i}")
+            equipe = linha[1].text_input(f"Equipe {i+1}", key=f"equipe_{i}")
+            notas = [linha[j+2].number_input(f"S{i+1}_{j+1}", min_value=0.0, max_value=10.0, step=0.1, key=f"nota_{i}_{j}") for j in range(5)]
+            acompanhamento.append({
+                "indicador": indicador_eq,
+                "equipe": equipe,
+                "notas": notas
+            })
 
     # 🚪 Logout
     st.sidebar.markdown("---")
@@ -206,5 +206,6 @@ for i in range(10):
         st.session_state.logado = False
         st.experimental_rerun()
         
+
 
 
