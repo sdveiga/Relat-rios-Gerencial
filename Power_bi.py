@@ -165,7 +165,7 @@ else:
             break
 
     # 📈 Exibe relatório Power BI
-    if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
+if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
     if selecionado and selecionado in powerbi_links:
         st.markdown(f"### 📊 Relatório: {selecionado_label}")
 
@@ -192,7 +192,7 @@ else:
         """, unsafe_allow_html=True)
 
     else:
-        st.warning("⚠️ Relatório não encontrado ou link inválido.")
+        st.warning("⚠️ Relatório não encontrado ou link inválido.")    
 
     # 📋 Visão ICG
     elif selecionado_label == "📋 ICG":
@@ -255,6 +255,7 @@ else:
         st.experimental_rerun()
 
         
+
 
 
 
