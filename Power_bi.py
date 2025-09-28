@@ -91,6 +91,17 @@ set_background("icones/Painel_power_point.png")
 st.markdown("""
     <style>
     .block-container {
+        padding: 0rem;
+    }
+    iframe {
+        width: 100% !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+    .block-container {
         padding-top: 0rem;
         padding-bottom: 0rem;
         padding-left: 0rem;
@@ -248,6 +259,7 @@ else:
         st.experimental_rerun()
 
         
+
 
 
 
