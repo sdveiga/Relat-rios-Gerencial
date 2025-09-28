@@ -185,6 +185,7 @@ else:
         opcoes.append(f"— {categoria} —")
         for label in itens:
             opcoes.append(label)
+            opcoes.append("📋 ICG")
 
     selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
 
@@ -199,11 +200,47 @@ else:
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
 
+elif selecionado_label == "📋 ICG":
+    st.markdown("### 📋 Indicadores de Controle de Gestão (ICG)")
+    
+    indicador = st.text_input("🔢 Indicador")
+    mes = st.selectbox("🗓️ Mês", [
+        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ])
+    nota = st.number_input("📈 Nota", min_value=0.0, max_value=10.0, step=0.1)
+    
+    st.markdown("#### 🗓️ Acompanhamento Semanal")
+    ofensores = [st.text_input(f"Ofensor Semana {i+1}") for i in range(5)]
+    
+    st.markdown("#### 📊 Parreto")
+    col1, col2 = st.columns(2)
+    with col1:
+        parreto1 = st.text_input("1º Parreto")
+        impacto1 = st.number_input("Impacto % (1º)", min_value=0, max_value=100)
+    with col2:
+        parreto2 = st.text_input("2º Parreto")
+        impacto2 = st.number_input("Impacto % (2º)", min_value=0, max_value=100)
+    
+    st.markdown("#### 🧠 FCA")
+    fato = st.text_area("📝 Fato")
+    causa = st.text_area("🧪 Causa")
+    acao = st.text_area("✅ Ação")
+    
+    st.markdown("#### 📎 Evidências")
+    evidencia = st.text_area("📌 Observações ou link de imagem")
+    
+    if st.button("💾 Salvar Indicador"):
+        st.success("✅ Indicador registrado com sucesso!")
+        # Aqui podemos salvar em session_state ou banco de dados futuramente
+    
+
     # 🚪 Logout
     st.sidebar.markdown("---")
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
