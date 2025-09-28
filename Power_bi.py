@@ -196,7 +196,7 @@ else:
         st.markdown("### 🖥️ Apresentação dos Indicadores ICG")
         registros = st.session_state.icg_registros
 
-        if cargo in ["GERENTE", "DIRETOR"]:
+if cargo in ["GERENTE", "DIRETOR"]:
     usuario_filtro = st.selectbox(
         "👤 Filtrar por usuário",
         ["Todos"] + list(set(r["usuario"] for r in registros))
@@ -206,6 +206,7 @@ else:
 else:
     # 👤 Usuário comum vê apenas os próprios registros
     registros = [r for r in registros if r["usuario"] == st.session_state.usuario]
+    
 
     elif selecionado_label == "🖥️ Apresentação ICG":
         st.markdown("### 🖥️ Apresentação dos Indicadores ICG")
@@ -240,3 +241,4 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
