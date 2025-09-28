@@ -192,28 +192,16 @@ else:
             st.success("✅ Indicador registrado com sucesso!")
 
     # 🖥️ Apresentação ICG
-    elif selecionado_label == "🖥️ Apresentação ICG":
-        st.markdown("### 🖥️ Apresentação dos Indicadores ICG")
-        registros = st.session_state.icg_registros
-
-       if cargo in ["GERENTE", "DIRETOR"]:
-    usuario_filtro = st.selectbox(
-        "👤 Filtrar por usuário",
-        ["Todos"] + list(set(r["usuario"] for r in registros))
-    )
-    if usuario_filtro != "Todos":
-        registros = [r for r in registros if r["usuario"] == usuario_filtro]
-else:
-    # 👤 Usuário comum vê apenas os próprios registros
-    registros = [r for r in registros if r["usuario"] == st.session_state.usuario]
-        
-    elif selecionado_label == "🖥️ Apresentação ICG":
+        elif selecionado_label == "🖥️ Apresentação ICG":
         st.markdown("### 🖥️ Apresentação dos Indicadores ICG")
         registros = st.session_state.icg_registros
 
         # 🔐 Gerente/Diretor podem filtrar todos os registros
         if cargo in ["GERENTE", "DIRETOR"]:
-            usuario_filtro = st.selectbox("👤 Filtrar por usuário", ["Todos"] + list(set(r["usuario"] for r in registros)))
+            usuario_filtro = st.selectbox(
+                "👤 Filtrar por usuário",
+                ["Todos"] + list(set(r["usuario"] for r in registros))
+            )
             if usuario_filtro != "Todos":
                 registros = [r for r in registros if r["usuario"] == usuario_filtro]
         else:
@@ -234,12 +222,12 @@ else:
         else:
             st.info("Nenhum registro disponível para apresentação.")
 
-
     # 🚪 Logout
     st.sidebar.markdown("---")
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
