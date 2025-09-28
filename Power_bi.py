@@ -143,7 +143,7 @@ else:
         indicador = st.text_input("🔢 Indicador")
         mes = st.selectbox("🗓️ Mês", ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
                                        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"])
-        nota = st.number_input("📈 Nota", min_value=0.0, max_value=10.0, step=0.1)
+        nota = st.number_input("📈 Nota", min_value=0.0, max_value=100.0, step=0.1)
         meta = st.number_input("🎯 Meta do Indicador", min_value=0.0, max_value=100.0, step=0.1)
         sentido = st.selectbox("📈 Sentido de Melhoria", ["crescente", "decrescente"])
 
@@ -233,6 +233,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
