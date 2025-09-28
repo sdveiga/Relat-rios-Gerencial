@@ -166,9 +166,9 @@ else:
         selecionado = "geral"
 
     # 📈 Relatórios Power BI
-    if selecionado_label in powerbi_links:
-        st.markdown(f"### 📊 Relatório: {selecionado}")
-        st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+    #if selecionado_label in powerbi_links:
+     #   st.markdown(f"### 📊 Relatório: {selecionado}")
+      #  st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
     # 🔘 Lista única de opções no menu lateral
     opcoes = []
     for categoria, itens in relatorios.items():
@@ -293,6 +293,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
