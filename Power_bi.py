@@ -10,6 +10,14 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+    <style>
+    button[title="Collapse sidebar"] {
+        display: none;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # 🔧 Estilo personalizado para o menu lateral
 st.markdown("""
     <style>
@@ -174,5 +182,6 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
