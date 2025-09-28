@@ -169,6 +169,32 @@ else:
     if selecionado_label in powerbi_links:
         st.markdown(f"### 📊 Relatório: {selecionado}")
         st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+    # 🔘 Lista única de opções no menu lateral
+    opcoes = []
+    for categoria, itens in relatorios.items():
+        opcoes.append(f"— {categoria} —")
+        for label in itens:
+            opcoes.append(label)
+    opcoes.append("📋 ICG")
+    opcoes.append("🖥️ Apresentação ICG")
+
+    # 🔘 Seleção do relatório
+    selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
+
+    # 🔍 Mapeia o nome visível para o identificador do link
+    selecionado = None
+    for categoria, itens in relatorios.items():
+        if selecionado_label in itens:
+            selecionado = itens[selecionado_label]
+            break
+
+    # 📈 Exibe o relatório Power BI se houver link correspondente
+    if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
+        if selecionado and selecionado in powerbi_links:
+            st.markdown(f"### 📊 Relatório: {selecionado_label}")
+            st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+        else:
+            st.warning("⚠️ Relatório não encontrado ou link inválido.")
 
     # 📋 Visão ICG
     elif selecionado_label == "📋 ICG":
@@ -267,6 +293,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
