@@ -82,7 +82,7 @@ powerbi_links = {
     "Faturamento MDU": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MDU_ID",
     "Faturamento Vendas": "https://app.powerbi.com/view?r=eyJrIjoiFAT_VENDAS_ID",
     "Produção por equipe": "https://app.powerbi.com/view?r=eyJrIjoiPROD_EQUIPE_ID",
-    "Realizar IVM": "https://forms.office.com/Pages/DesignPageV2.aspx?prevorigin=shell&origin=NeoPortalPage&subpage=design&id=FBeP9KVigUy7Xyv6Gw9Lge-7ASfsVxxHq5qjvb_T5P1UQlNPOFNCMFY4OFpCSVY2WlRNQVQ5VkhMRS4u",
+    "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
     "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID"
 }
 
@@ -167,9 +167,8 @@ else:
     # 📈 Exibe relatório Power BI
     if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
         if selecionado and selecionado in powerbi_links:
-            st.markdown(f"### 📊 Relatório: {selecionado_label}")            
-            st.component#s.v1.iframe(powerbi_links[selecionado], height=1000, scrolling=True)
-            
+            st.markdown(f"### 📊 Relatório: {selecionado_label}")
+            st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
         else:
             st.warning("⚠️ Relatório não encontrado ou link inválido.")
 
@@ -234,15 +233,3 @@ else:
         st.experimental_rerun()
 
         
-
-
-
-
-
-
-
-
-
-
-
-
