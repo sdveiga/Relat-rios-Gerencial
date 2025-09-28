@@ -178,29 +178,27 @@ else:
         
         nota = st.number_input("📈 Nota", min_value=0.0, max_value=10.0, step=0.1)
 
-        st.markdown("#### 🗓️ Acompanhamento Semanal")
-        ofensores = [st.text_input(f"Ofensor Semana {i+1}") for i in range(5)]
+st.markdown("#### 🗓️ Acompanhamento Semanal por Equipe")
 
-        st.markdown("#### 📊 Parreto")
-        col1, col2 = st.columns(2)
-        with col1:
-            parreto1 = st.text_input("1º Parreto")
-            impacto1 = st.number_input("Impacto % (1º)", min_value=0, max_value=100)
-        with col2:
-            parreto2 = st.text_input("2º Parreto")
-            impacto2 = st.number_input("Impacto % (2º)", min_value=0, max_value=100)
+# Cabeçalhos da tabela
+cols = st.columns([2, 3, 1, 1, 1, 1, 1])
+cols[0].markdown("**Indicador**")
+cols[1].markdown("**Equipe**")
+for i in range(5):
+    cols[i+2].markdown(f"**S{i+1}**")  # Semana 1 a 5
 
-        st.markdown("#### 🧠 FCA")
-        fato = st.text_area("📝 Fato")
-        causa = st.text_area("🧪 Causa")
-        acao = st.text_area("✅ Ação")
-
-        st.markdown("#### 📎 Evidências")
-        evidencia = st.text_area("📌 Observações ou link de imagem")
-
-        if st.button("💾 Salvar Indicador"):
-            st.success("✅ Indicador registrado com sucesso!")
-            # Aqui podemos salvar em session_state ou banco de dados futuramente
+# Linhas da tabela (10 equipes)
+acompanhamento = []
+for i in range(10):
+    linha = st.columns([2, 3, 1, 1, 1, 1, 1])
+    indicador = linha[0].text_input(f"Indicador {i+1}", key=f"indicador_{i}")
+    equipe = linha[1].text_input(f"Equipe {i+1}", key=f"equipe_{i}")
+    notas = [linha[j+2].number_input(f"S{i+1}_{j+1}", min_value=0.0, max_value=10.0, step=0.1, key=f"nota_{i}_{j}") for j in range(5)]
+    acompanhamento.append({
+        "indicador": indicador,
+        "equipe": equipe,
+        "notas": notas
+    })
 
     # 🚪 Logout
     st.sidebar.markdown("---")
@@ -208,4 +206,5 @@ else:
         st.session_state.logado = False
         st.experimental_rerun()
         
+
 
