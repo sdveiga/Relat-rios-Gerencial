@@ -14,7 +14,6 @@ st.markdown("""
     section[data-testid="stSidebar"] * {
         color: white !important;
     }
-    .css-1v3fvcr {color: white !important;}
     div[data-testid="stSidebarCollapseButton"] {
         display: none !important;
     }
@@ -59,29 +58,18 @@ usuarios = {
     "gerente_user": {
         "senha": "789", "cargo": "GERENTE", "nome": "Samuel David Veiga",
         "foto": "gerente.png", "admissao": "01/07/2008", "funcionarios": 360
+    },
+    "tecnico_user": {
+        "senha": "123", "cargo": "TECNICO", "nome": "Carlos Silva",
+        "foto": "padrao.png", "admissao": "15/03/2020", "funcionarios": 0
     }
 }
 
 # 🔗 Relatórios Power BI simulados
 powerbi_links = {
-    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9",
-    "Certificado": "https://app.powerbi.com/view?r=eyJrIjoiCERTIFICADO_ID",
-    "LOG VT": "https://app.powerbi.com/view?r=eyJrIjoiLOGVT_ID",
-    "Eficiência": "https://app.powerbi.com/view?r=eyJrIjoiEFICIENCIA_ID",
-    "Produtividade": "https://app.powerbi.com/view?r=eyJrIjoiPRODUTIVIDADE_ID",
-    "Pontuação": "https://app.powerbi.com/view?r=eyJrIjoiPONTUACAO_ID",
-    "MESH": "https://app.powerbi.com/view?r=eyJrIjoiMESH_ID",
-    "Rota Inicial": "https://app.powerbi.com/view?r=eyJrIjoiROTA_INICIAL_ID",
-    "Rota Final": "https://app.powerbi.com/view?r=eyJrIjoiROTA_FINAL_ID",
-    "Faturamento Instalação": "https://app.powerbi.com/view?r=eyJrIjoiFAT_INST_ID",
-    "Faturamento Manutenção": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MAN_ID",
-    "Desconto de revisita": "https://app.powerbi.com/view?r=eyJrIjoiDESCONTO_ID",
-    "Faturamento MDU": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MDU_ID",
-    "Faturamento Vendas": "https://app.powerbi.com/view?r=eyJrIjoiFAT_VENDAS_ID",
-    "Produção por equipe": "https://app.powerbi.com/view?r=eyJrIjoiPROD_EQUIPE_ID",
-    "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
-    "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID",
-    "geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
+    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoi...",
+    "Certificado": "https://app.powerbi.com/view?r=eyJrIjoi...",
+    "geral": "https://app.powerbi.com/view?r=eyJrIjoi..."
 }
 
 # 🎨 Fundo
@@ -90,6 +78,8 @@ set_background("icones/Painel_power_point.png")
 # 🔐 Controle de sessão
 if "logado" not in st.session_state:
     st.session_state.logado = False
+if "icg_registros" not in st.session_state:
+    st.session_state.icg_registros = []
 
 # 🔐 Tela de login
 if not st.session_state.logado:
@@ -111,46 +101,26 @@ else:
     nome = dados["nome"]
     cargo = dados["cargo"]
 
-    # 📁 Menu lateral com foto e boas-vindas
     exibir_foto(f"icones/{dados['foto']}")
     st.sidebar.markdown(f"### 👋 Bem-vindo, {nome}!")
     st.sidebar.markdown(f"**Cargo:** {cargo}")
-
     st.sidebar.markdown("---")
     st.sidebar.markdown("## 📁 Relatórios Disponíveis")
 
     relatorios = {
         "📊 Indicadores": {
             "📈 Hierarquia": "Hierarquia",
-            "🎓 Certificado": "Certificado",
-            "🚌 LOG VT": "LOG VT",
-            "⚙️ Eficiência": "Eficiência",
-            "📊 Produtividade": "Produtividade",
-            "🏅 Pontuação": "Pontuação",
-            "🧩 MESH": "MESH",
-            "🧭 Rota Inicial": "Rota Inicial",
-            "🚩 Rota Final": "Rota Final"
-        },
-        "💰 Financeiro": {
-            "🏗️ Faturamento Instalação": "Faturamento Instalação",
-            "🔧 Faturamento Manutenção": "Faturamento Manutenção",
-            "💸 Desconto de revisita": "Desconto de revisita",
-            "🏢 Faturamento MDU": "Faturamento MDU",
-            "🛒 Faturamento Vendas": "Faturamento Vendas"
-        },
-        "⚙️ Processos Operacionais": {
-            "📝 Realizar IVM": "Realizar IVM",
-            "🚨 Processo disciplinar": "Processo disciplinar"
+            "🎓 Certificado": "Certificado"
         }
     }
 
-    # 🔘 Lista única de opções
     opcoes = []
     for categoria, itens in relatorios.items():
         opcoes.append(f"— {categoria} —")
         for label in itens:
             opcoes.append(label)
-    opcoes.append("📋 ICG")  # 👈 Nova visão adicionada
+    opcoes.append("📋 ICG")
+    opcoes.append("🖥️ Apresentação ICG")
 
     selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
 
@@ -161,33 +131,29 @@ else:
     else:
         selecionado = "geral"
 
-    # 📈 Exibe o relatório
-    if selecionado_label != "📋 ICG":
+    # 📈 Relatórios Power BI
+    if selecionado_label in powerbi_links:
         st.markdown(f"### 📊 Relatório: {selecionado}")
         st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
 
     # 📋 Visão ICG
-
     elif selecionado_label == "📋 ICG":
         st.markdown("### 📋 Indicadores de Controle de Gestão (ICG)")
 
         indicador = st.text_input("🔢 Indicador")
-        mes = st.selectbox("🗓️ Mês", [
-            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-        ])
+        mes = st.selectbox("🗓️ Mês", ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                                       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"])
         nota = st.number_input("📈 Nota", min_value=0.0, max_value=10.0, step=0.1)
+        meta = st.number_input("🎯 Meta do Indicador", min_value=0.0, max_value=100.0, step=0.1)
+        sentido = st.selectbox("📈 Sentido de Melhoria", ["crescente", "decrescente"])
 
         st.markdown("#### 🗓️ Acompanhamento Semanal por Equipe")
-
-        # Cabeçalhos da tabela
         cols = st.columns([2, 3, 1, 1, 1, 1, 1])
         cols[0].markdown("**Indicador**")
         cols[1].markdown("**Equipe**")
         for i in range(5):
-            cols[i+2].markdown(f"**S{i+1}**")  # Semana 1 a 5
+            cols[i+2].markdown(f"**S{i+1}**")
 
-        # Linhas da tabela (10 equipes)
         acompanhamento = []
         for i in range(10):
             linha = st.columns([2, 3, 1, 1, 1, 1, 1])
@@ -201,7 +167,6 @@ else:
             })
 
         st.markdown("#### 🧠 FCA — Fato, Causa e Ação")
-
         fato = st.text_area("📝 Fato")
         causa = st.text_area("🧪 Causa")
         acao = st.text_area("✅ Ação")
@@ -210,16 +175,68 @@ else:
         evidencia = st.text_area("📌 Observações ou link de imagem")
 
         if st.button("💾 Salvar Indicador"):
+            st.session_state.icg_registros.append({
+                "usuario": st.session_state.usuario,
+                "cargo": cargo,
+                "indicador": indicador,
+                "mes": mes,
+                "nota": nota,
+                "meta": meta,
+                "sentido": sentido,
+                "acompanhamento": acompanhamento,
+                "fato": fato,
+                "causa": causa,
+                "acao": acao,
+                "evidencia": evidencia
+            })
             st.success("✅ Indicador registrado com sucesso!")
-            # Aqui podemos salvar os dados em session_state ou banco de dados futuramente
+
+    # 🖥️ Apresentação ICG
+    elif selecionado_label == "🖥️ Apresentação ICG":
+        st.markdown("### 🖥️ Apresentação dos Indicadores ICG")
+        registros = st.session_state.icg_registros
+
+        if cargo in ["GERENTE", "DIRETOR"]:
+    usuario_filtro = st.selectbox(
+        "👤 Filtrar por usuário",
+        ["Todos"] + list(set(r["usuario"] for r in registros))
+    )
+    if usuario_filtro != "Todos":
+        registros = [r for r in registros if r["usuario"] == usuario_filtro]
+else:
+    # 👤 Usuário comum vê apenas os próprios registros
+    registros = [r for r in registros if r["usuario"] == st.session_state.usuario]
+
+    elif selecionado_label == "🖥️ Apresentação ICG":
+        st.markdown("### 🖥️ Apresentação dos Indicadores ICG")
+        registros = st.session_state.icg_registros
+
+        # 🔐 Gerente/Diretor podem filtrar todos os registros
+        if cargo in ["GERENTE", "DIRETOR"]:
+            usuario_filtro = st.selectbox("👤 Filtrar por usuário", ["Todos"] + list(set(r["usuario"] for r in registros)))
+            if usuario_filtro != "Todos":
+                registros = [r for r in registros if r["usuario"] == usuario_filtro]
+        else:
+            # 👤 Usuário comum vê apenas os próprios registros
+            registros = [r for r in registros if r["usuario"] == st.session_state.usuario]
+
+        # 📊 Exibição dos registros filtrados
+        if registros:
+            for registro in registros:
+                st.markdown(f"#### 📌 {registro['indicador']} — {registro['mes']}")
+                st.markdown(f"- Equipe: {registro['acompanhamento'][0]['equipe']}")
+                st.markdown(f"- Nota: {registro['nota']} | Meta: {registro['meta']} | {'↑ Melhor' if registro['sentido'] == 'crescente' else '↓ Melhor'}")
+                st.markdown(f"**Fato:** {registro['fato']}")
+                st.markdown(f"**Causa:** {registro['causa']}")
+                st.markdown(f"**Ação:** {registro['acao']}")
+                st.markdown(f"📎 Evidência: {registro['evidencia']}")
+                st.markdown("---")
+        else:
+            st.info("Nenhum registro disponível para apresentação.")
+
 
     # 🚪 Logout
     st.sidebar.markdown("---")
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
-        
-
-
-
-
