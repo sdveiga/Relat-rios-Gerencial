@@ -7,42 +7,6 @@ st.markdown("""
     <style>
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-    div[data-testid="stSidebarCollapseButton"] {
-        display: none !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-    span[data-testid="stIconMaterial"]::before {
-        content: "";
-    }
-    span[data-testid="stIconMaterial"] {
-        visibility: hidden;
-        width: 0;
-        height: 0;
-        display: none;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-    button[title="Collapse sidebar"] {
-        display: none;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# 🔧 Estilo personalizado para o menu lateral
-st.markdown("""
-    <style>
     section[data-testid="stSidebar"] {
         background-color: #2f2f2f;
         color: white;
@@ -51,6 +15,9 @@ st.markdown("""
         color: white !important;
     }
     .css-1v3fvcr {color: white !important;}
+    div[data-testid="stSidebarCollapseButton"] {
+        display: none !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -95,7 +62,6 @@ usuarios = {
     }
 }
 
-
 # 🔗 Relatórios Power BI simulados
 powerbi_links = {
     "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9",
@@ -117,7 +83,6 @@ powerbi_links = {
     "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID",
     "geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
 }
-
 
 # 🎨 Fundo
 set_background("icones/Painel_power_point.png")
@@ -185,7 +150,7 @@ else:
         opcoes.append(f"— {categoria} —")
         for label in itens:
             opcoes.append(label)
-            opcoes.append("📋 ICG")
+    opcoes.append("📋 ICG")  # 👈 Nova visão adicionada
 
     selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
 
@@ -197,52 +162,49 @@ else:
         selecionado = "geral"
 
     # 📈 Exibe o relatório
-    st.markdown(f"### 📊 Relatório: {selecionado}")
-    st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+    if selecionado_label != "📋 ICG":
+        st.markdown(f"### 📊 Relatório: {selecionado}")
+        st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
 
-elif selecionado_label == "📋 ICG":
-    st.markdown("### 📋 Indicadores de Controle de Gestão (ICG)")
-    
-    indicador = st.text_input("🔢 Indicador")
-    mes = st.selectbox("🗓️ Mês", [
-        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-    ])
-    nota = st.number_input("📈 Nota", min_value=0.0, max_value=10.0, step=0.1)
-    
-    st.markdown("#### 🗓️ Acompanhamento Semanal")
-    ofensores = [st.text_input(f"Ofensor Semana {i+1}") for i in range(5)]
-    
-    st.markdown("#### 📊 Parreto")
-    col1, col2 = st.columns(2)
-    with col1:
-        parreto1 = st.text_input("1º Parreto")
-        impacto1 = st.number_input("Impacto % (1º)", min_value=0, max_value=100)
-    with col2:
-        parreto2 = st.text_input("2º Parreto")
-        impacto2 = st.number_input("Impacto % (2º)", min_value=0, max_value=100)
-    
-    st.markdown("#### 🧠 FCA")
-    fato = st.text_area("📝 Fato")
-    causa = st.text_area("🧪 Causa")
-    acao = st.text_area("✅ Ação")
-    
-    st.markdown("#### 📎 Evidências")
-    evidencia = st.text_area("📌 Observações ou link de imagem")
-    
-    if st.button("💾 Salvar Indicador"):
-        st.success("✅ Indicador registrado com sucesso!")
-        # Aqui podemos salvar em session_state ou banco de dados futuramente
-    
+    # 📋 Visão ICG
+    elif selecionado_label == "📋 ICG":
+        st.markdown("### 📋 Indicadores de Controle de Gestão (ICG)")
+
+        indicador = st.text_input("🔢 Indicador")
+        mes = st.selectbox("🗓️ Mês", [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ])
+        nota = st.number_input("📈 Nota", min_value=0.0, max_value=
+        nota = st.number_input("📈 Nota", min_value=0.0, max_value=10.0, step=0.1)
+
+        st.markdown("#### 🗓️ Acompanhamento Semanal")
+        ofensores = [st.text_input(f"Ofensor Semana {i+1}") for i in range(5)]
+
+        st.markdown("#### 📊 Parreto")
+        col1, col2 = st.columns(2)
+        with col1:
+            parreto1 = st.text_input("1º Parreto")
+            impacto1 = st.number_input("Impacto % (1º)", min_value=0, max_value=100)
+        with col2:
+            parreto2 = st.text_input("2º Parreto")
+            impacto2 = st.number_input("Impacto % (2º)", min_value=0, max_value=100)
+
+        st.markdown("#### 🧠 FCA")
+        fato = st.text_area("📝 Fato")
+        causa = st.text_area("🧪 Causa")
+        acao = st.text_area("✅ Ação")
+
+        st.markdown("#### 📎 Evidências")
+        evidencia = st.text_area("📌 Observações ou link de imagem")
+
+        if st.button("💾 Salvar Indicador"):
+            st.success("✅ Indicador registrado com sucesso!")
+            # Aqui podemos salvar em session_state ou banco de dados futuramente
 
     # 🚪 Logout
     st.sidebar.markdown("---")
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
-
-
-
-
-
-
+        
