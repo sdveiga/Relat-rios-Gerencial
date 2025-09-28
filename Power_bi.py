@@ -192,7 +192,7 @@ else:
             st.success("✅ Indicador registrado com sucesso!")
 
     # 🖥️ Apresentação ICG
-        elif selecionado_label == "🖥️ Apresentação ICG":
+    elif selecionado_label == "🖥️ Apresentação ICG":
         st.markdown("### 🖥️ Apresentação dos Indicadores ICG")
         registros = st.session_state.icg_registros
 
@@ -200,7 +200,7 @@ else:
         if cargo in ["GERENTE", "DIRETOR"]:
             usuario_filtro = st.selectbox(
                 "👤 Filtrar por usuário",
-                ["Todos"] + list(set(r["usuario"] for r in registros))
+                ["Todos"] + sorted(set(r["usuario"] for r in registros))
             )
             if usuario_filtro != "Todos":
                 registros = [r for r in registros if r["usuario"] == usuario_filtro]
@@ -211,22 +211,29 @@ else:
         # 📊 Exibição dos registros filtrados
         if registros:
             for registro in registros:
-                st.markdown(f"#### 📌 {registro['indicador']} — {registro['mes']}")
-                st.markdown(f"- Equipe: {registro['acompanhamento'][0]['equipe']}")
-                st.markdown(f"- Nota: {registro['nota']} | Meta: {registro['meta']} | {'↑ Melhor' if registro['sentido'] == 'crescente' else '↓ Melhor'}")
-                st.markdown(f"**Fato:** {registro['fato']}")
-                st.markdown(f"**Causa:** {registro['causa']}")
-                st.markdown(f"**Ação:** {registro['acao']}")
-                st.markdown(f"📎 Evidência: {registro['evidencia']}")
+                st.markdown(f"#### 📌 Indicador: {registro['indicador']} — {registro['mes']}")
+                st.markdown(f"- 👤 Usuário: {registro['usuario']}")
+                st.markdown(f"- 📈 Nota: {registro['nota']} | 🎯 Meta: {registro['meta']} | {'🔼 Melhor para cima' if registro['sentido'] == 'crescente' else '🔽 Melhor para baixo'}")
+
+                # Exibe primeira equipe como exemplo
+                equipe_info = registro['acompanhamento'][0]
+                st.markdown(f"- 🧑‍🤝‍🧑 Equipe: {equipe_info['equipe']}")
+                st.markdown(f"- 📊 Notas Semanais: {' | '.join(str(n) for n in equipe_info['notas'])}")
+
+                st.markdown("**🧠 FCA**")
+                st.markdown(f"- 📝 Fato: {registro['fato']}")
+                st.markdown(f"- 🧪 Causa: {registro['causa']}")
+                st.markdown(f"- ✅ Ação: {registro['acao']}")
+                st.markdown(f"- 📎 Evidência: {registro['evidencia']}")
                 st.markdown("---")
         else:
-            st.info("Nenhum registro disponível para apresentação.")
-
+            st.info("ℹ️ Nenhum registro disponível para apresentação.")
     # 🚪 Logout
     st.sidebar.markdown("---")
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
