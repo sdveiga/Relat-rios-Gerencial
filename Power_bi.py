@@ -9,6 +9,15 @@ st.markdown("""
     header {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+    div[data-testid="stSidebarCollapseButton"] {
+        display: none !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 st.markdown("""
     <style>
     span[data-testid="stIconMaterial"]::before {
@@ -195,6 +204,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
