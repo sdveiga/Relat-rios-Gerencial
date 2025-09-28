@@ -181,7 +181,9 @@ else:
     if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
         if selecionado and selecionado in powerbi_links:
             st.markdown(f"### 📊 Relatório: {selecionado_label}")
-            st.components.v1.iframe(powerbi_links[selecionado], height=1000, scrolling=True)
+            st.components.v1.html(f"""
+    <iframe src="{powerbi_links[selecionado]}" width="100%" height="1000" style="border:none;"></iframe>
+""", height=1000)
         else:
             st.warning("⚠️ Relatório não encontrado ou link inválido.")
 
@@ -246,5 +248,6 @@ else:
         st.experimental_rerun()
 
         
+
 
 
