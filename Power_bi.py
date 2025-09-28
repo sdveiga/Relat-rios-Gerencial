@@ -96,8 +96,6 @@ else:
     exibir_foto(f"icones/{dados['foto']}")
     st.sidebar.markdown(f"### 👋 Bem-vindo, {nome}!")
     st.sidebar.markdown(f"**Cargo:** {cargo}")
-    st.sidebar.markdown(f"**Admissão:** {dados['admissao']}")
-    st.sidebar.markdown(f"**Funcionários:** {dados['funcionarios']}")
 
     st.sidebar.markdown("---")
     st.sidebar.markdown("## 📁 Relatórios Disponíveis")
@@ -152,3 +150,4 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
