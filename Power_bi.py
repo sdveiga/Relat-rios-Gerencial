@@ -83,10 +83,8 @@ powerbi_links = {
     "Faturamento Vendas": "https://app.powerbi.com/view?r=eyJrIjoiFAT_VENDAS_ID",
     "Produção por equipe": "https://app.powerbi.com/view?r=eyJrIjoiPROD_EQUIPE_ID",
     "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
-    "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID",
-    "geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
+    "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID"
 }
-
 
 # 🎨 Fundo
 set_background("icones/Painel_power_point.png")
@@ -121,8 +119,8 @@ else:
     st.sidebar.markdown(f"### 👋 Bem-vindo, {nome}!")
     st.sidebar.markdown(f"**Cargo:** {cargo}")
     st.sidebar.markdown("---")
-    st.sidebar.markdown("## 📁 Relatórios Disponíveis")
 
+    # Relatórios organizados por categoria
     relatorios = {
         "📊 Indicadores": {
             "📈 Hierarquia": "Hierarquia",
@@ -148,6 +146,7 @@ else:
         }
     }
 
+    # 🔘 Menu lateral
     opcoes = []
     for categoria, itens in relatorios.items():
         opcoes.append(f"— {categoria} —")
@@ -156,30 +155,7 @@ else:
     opcoes.append("📋 ICG")
     opcoes.append("🖥️ Apresentação ICG")
 
-    selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
-
-    for categoria, itens in relatorios.items():
-        if selecionado_label in itens:
-            selecionado = itens[selecionado_label]
-            break
-    else:
-        selecionado = "geral"
-
-    # 📈 Relatórios Power BI
-    #if selecionado_label in powerbi_links:
-     #   st.markdown(f"### 📊 Relatório: {selecionado}")
-      #  st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
-    # 🔘 Lista única de opções no menu lateral
-    opcoes = []
-    for categoria, itens in relatorios.items():
-        opcoes.append(f"— {categoria} —")
-        for label in itens:
-            opcoes.append(label)
-    opcoes.append("📋 ICG")
-    opcoes.append("🖥️ Apresentação ICG")
-
-    # 🔘 Seleção do relatório
-    selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
+    selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes, key="menu_relatorios")
 
     # 🔍 Mapeia o nome visível para o identificador do link
     selecionado = None
@@ -188,7 +164,7 @@ else:
             selecionado = itens[selecionado_label]
             break
 
-    # 📈 Exibe o relatório Power BI se houver link correspondente
+    # 📈 Exibe relatório Power BI
     if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
         if selecionado and selecionado in powerbi_links:
             st.markdown(f"### 📊 Relatório: {selecionado_label}")
@@ -251,54 +227,9 @@ else:
             })
             st.success("✅ Indicador registrado com sucesso!")
 
-    # 🖥️ Apresentação ICG
-    elif selecionado_label == "🖥️ Apresentação ICG":
-        st.markdown("### 🖥️ Apresentação dos Indicadores ICG")
-        registros = st.session_state.icg_registros
-
-        # 🔐 Gerente/Diretor podem filtrar todos os registros
-        if cargo in ["GERENTE", "DIRETOR"]:
-            usuario_filtro = st.selectbox(
-                "👤 Filtrar por usuário",
-                ["Todos"] + sorted(set(r["usuario"] for r in registros))
-            )
-            if usuario_filtro != "Todos":
-                registros = [r for r in registros if r["usuario"] == usuario_filtro]
-        else:
-            # 👤 Usuário comum vê apenas os próprios registros
-            registros = [r for r in registros if r["usuario"] == st.session_state.usuario]
-
-        # 📊 Exibição dos registros filtrados
-        if registros:
-            for registro in registros:
-                st.markdown(f"#### 📌 Indicador: {registro['indicador']} — {registro['mes']}")
-                st.markdown(f"- 👤 Usuário: {registro['usuario']}")
-                st.markdown(f"- 📈 Nota: {registro['nota']} | 🎯 Meta: {registro['meta']} | {'🔼 Melhor para cima' if registro['sentido'] == 'crescente' else '🔽 Melhor para baixo'}")
-
-                # Exibe primeira equipe como exemplo
-                equipe_info = registro['acompanhamento'][0]
-                st.markdown(f"- 🧑‍🤝‍🧑 Equipe: {equipe_info['equipe']}")
-                st.markdown(f"- 📊 Notas Semanais: {' | '.join(str(n) for n in equipe_info['notas'])}")
-
-                st.markdown("**🧠 FCA**")
-                st.markdown(f"- 📝 Fato: {registro['fato']}")
-                st.markdown(f"- 🧪 Causa: {registro['causa']}")
-                st.markdown(f"- ✅ Ação: {registro['acao']}")
-                st.markdown(f"- 📎 Evidência: {registro['evidencia']}")
-                st.markdown("---")
-        else:
-            st.info("ℹ️ Nenhum registro disponível para apresentação.")
-    # 🚪 Logout
     st.sidebar.markdown("---")
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
 
-
-
-
-
-
-
-
-
+        
