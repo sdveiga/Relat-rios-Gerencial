@@ -67,10 +67,26 @@ usuarios = {
 
 # 🔗 Relatórios Power BI simulados
 powerbi_links = {
-    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoi...",
-    "Certificado": "https://app.powerbi.com/view?r=eyJrIjoi...",
-    "geral": "https://app.powerbi.com/view?r=eyJrIjoi..."
+    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9",
+    "Certificado": "https://app.powerbi.com/view?r=eyJrIjoiCERTIFICADO_ID",
+    "LOG VT": "https://app.powerbi.com/view?r=eyJrIjoiLOGVT_ID",
+    "Eficiência": "https://app.powerbi.com/view?r=eyJrIjoiEFICIENCIA_ID",
+    "Produtividade": "https://app.powerbi.com/view?r=eyJrIjoiPRODUTIVIDADE_ID",
+    "Pontuação": "https://app.powerbi.com/view?r=eyJrIjoiPONTUACAO_ID",
+    "MESH": "https://app.powerbi.com/view?r=eyJrIjoiMESH_ID",
+    "Rota Inicial": "https://app.powerbi.com/view?r=eyJrIjoiROTA_INICIAL_ID",
+    "Rota Final": "https://app.powerbi.com/view?r=eyJrIjoiROTA_FINAL_ID",
+    "Faturamento Instalação": "https://app.powerbi.com/view?r=eyJrIjoiFAT_INST_ID",
+    "Faturamento Manutenção": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MAN_ID",
+    "Desconto de revisita": "https://app.powerbi.com/view?r=eyJrIjoiDESCONTO_ID",
+    "Faturamento MDU": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MDU_ID",
+    "Faturamento Vendas": "https://app.powerbi.com/view?r=eyJrIjoiFAT_VENDAS_ID",
+    "Produção por equipe": "https://app.powerbi.com/view?r=eyJrIjoiPROD_EQUIPE_ID",
+    "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
+    "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID",
+    "geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
 }
+
 
 # 🎨 Fundo
 set_background("icones/Painel_power_point.png")
@@ -110,7 +126,25 @@ else:
     relatorios = {
         "📊 Indicadores": {
             "📈 Hierarquia": "Hierarquia",
-            "🎓 Certificado": "Certificado"
+            "🎓 Certificado": "Certificado",
+            "🚌 LOG VT": "LOG VT",
+            "⚙️ Eficiência": "Eficiência",
+            "📊 Produtividade": "Produtividade",
+            "🏅 Pontuação": "Pontuação",
+            "🧩 MESH": "MESH",
+            "🧭 Rota Inicial": "Rota Inicial",
+            "🚩 Rota Final": "Rota Final"
+        },
+        "💰 Financeiro": {
+            "🏗️ Faturamento Instalação": "Faturamento Instalação",
+            "🔧 Faturamento Manutenção": "Faturamento Manutenção",
+            "💸 Desconto de revisita": "Desconto de revisita",
+            "🏢 Faturamento MDU": "Faturamento MDU",
+            "🛒 Faturamento Vendas": "Faturamento Vendas"
+        },
+        "⚙️ Processos Operacionais": {
+            "📝 Realizar IVM": "Realizar IVM",
+            "🚨 Processo disciplinar": "Processo disciplinar"
         }
     }
 
@@ -233,6 +267,7 @@ else:
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
+
 
 
 
