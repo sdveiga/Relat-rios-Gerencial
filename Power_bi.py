@@ -167,8 +167,7 @@ else:
     # 📈 Exibe relatório Power BI
     if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
         if selecionado and selecionado in powerbi_links:
-            st.markdown(f"### 📊 Relatório: {selecionado_label}")
-            #st.components.v1.iframe(powerbi_links[selecionado], height=st.experimental_get_query_params().get("fullscreen", [False])[0] == "True" and 1500 or 1500)
+            st.markdown(f"### 📊 Relatório: {selecionado_label}")            
             st.component#s.v1.iframe(powerbi_links[selecionado], height=1000, scrolling=True)
             
         else:
@@ -235,6 +234,7 @@ else:
         st.experimental_rerun()
 
         
+
 
 
 
