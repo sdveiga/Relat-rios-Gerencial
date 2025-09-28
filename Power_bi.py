@@ -175,7 +175,7 @@ else:
             "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         ])
-        nota = st.number_input("📈 Nota", min_value=0.0, max_value=
+        
         nota = st.number_input("📈 Nota", min_value=0.0, max_value=10.0, step=0.1)
 
         st.markdown("#### 🗓️ Acompanhamento Semanal")
@@ -208,3 +208,4 @@ else:
         st.session_state.logado = False
         st.experimental_rerun()
         
+
