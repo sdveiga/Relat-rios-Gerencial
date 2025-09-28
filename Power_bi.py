@@ -10,6 +10,19 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# 🔧 Estilo personalizado para o menu lateral
+st.markdown("""
+    <style>
+    section[data-testid="stSidebar"] {
+        background-color: #2f2f2f;
+        color: white;
+    }
+    section[data-testid="stSidebar"] * {
+        color: white !important;
+    }
+    .css-1v3fvcr {color: white !important;}
+    </style>
+""", unsafe_allow_html=True)
 
 # 🔧 Função para definir imagem de fundo
 def set_background(png_file):
@@ -37,58 +50,23 @@ def set_background(png_file):
         </style>
     """, unsafe_allow_html=True)
 
-# 🖼️ Função para exibir logo
-def show_logo(png_file):
-    with open(png_file, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode()
-    st.markdown(f"""
-        <div style="position: absolute; top: 10px; right: 10px; z-index: 100;">
-            <img src="data:image/png;base64,{encoded}" width="150">
-        </div>
-    """, unsafe_allow_html=True)
-
 # 🖼️ Função para exibir foto do usuário
 def exibir_foto(caminho):
     if os.path.exists(caminho):
-        st.image(caminho, width=150)
+        st.sidebar.image(caminho, width=150)
     else:
-        st.image("icones/padrao.png", width=150)
+        st.sidebar.image("icones/padrao.png", width=150)
 
 # 👥 Usuários simulados
 usuarios = {
-    "ceo_user": {"senha": "123", "cargo": "CEO", "nome": "Carlos", "foto": "ceo.png", "admissao": "01/01/2015", "funcionarios": 120},
-    "diretor_user": {"senha": "456", "cargo": "DIRETOR", "nome": "Fernanda", "foto": "diretor.png", "admissao": "15/03/2016", "funcionarios": 80},
-    "gerente_user": {"senha": "789", "cargo": "GERENTE", "nome": "Samuel David Veiga", "foto": "gerente.png", "admissao": "01/07/2008", "funcionarios": 360},
-    "coord_user": {"senha": "abc", "cargo": "COORDENADOR", "nome": "Luciana", "foto": "coord.png", "admissao": "20/09/2019", "funcionarios": 15},
-    "sup_user": {"senha": "def", "cargo": "SUPERVISOR", "nome": "Rafael", "foto": "sup.png", "admissao": "05/11/2020", "funcionarios": 8},
-    "cop_user": {"senha": "ghi", "cargo": "OPERADOR COP", "nome": "Ana", "foto": "cop.png", "admissao": "12/01/2022", "funcionarios": 0},
+    "gerente_user": {
+        "senha": "789", "cargo": "GERENTE", "nome": "Samuel David Veiga",
+        "foto": "gerente.png", "admissao": "01/07/2008", "funcionarios": 360
+    }
 }
 
-# 🔗 Relatórios Power BI simulados
-powerbi_links = {
-    "Hierarquia": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9",
-    "Certificado": "https://app.powerbi.com/view?r=eyJrIjoiCERTIFICADO_ID",
-    "LOG VT": "https://app.powerbi.com/view?r=eyJrIjoiLOGVT_ID",
-    "Eficiência": "https://app.powerbi.com/view?r=eyJrIjoiEFICIENCIA_ID",
-    "Produtividade": "https://app.powerbi.com/view?r=eyJrIjoiPRODUTIVIDADE_ID",
-    "Pontuação": "https://app.powerbi.com/view?r=eyJrIjoiPONTUACAO_ID",
-    "MESH": "https://app.powerbi.com/view?r=eyJrIjoiMESH_ID",
-    "Rota Inicial": "https://app.powerbi.com/view?r=eyJrIjoiROTA_INICIAL_ID",
-    "Rota Final": "https://app.powerbi.com/view?r=eyJrIjoiROTA_FINAL_ID",
-    "Faturamento Instalação": "https://app.powerbi.com/view?r=eyJrIjoiFAT_INST_ID",
-    "Faturamento Manutenção": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MAN_ID",
-    "Desconto de revisita": "https://app.powerbi.com/view?r=eyJrIjoiDESCONTO_ID",
-    "Faturamento MDU": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MDU_ID",
-    "Faturamento Vendas": "https://app.powerbi.com/view?r=eyJrIjoiFAT_VENDAS_ID",
-    "Produção por equipe": "https://app.powerbi.com/view?r=eyJrIjoiPROD_EQUIPE_ID",
-    "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
-    "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID",
-    "geral": "https://app.powerbi.com/view?r=eyJrIjoiMGRiZWNjNWEtNDZiNS00Yjc2LWFjZGEtYzIxMWU4MDI5YTBkIiwidCI6ImY0OGYxNzE0LTYyYTUtNGM4MS1iYjVmLTJiZmExYjBmNGI4MSJ9"
-}
-
-# 🎨 Fundo e logo
+# 🎨 Fundo
 set_background("icones/Painel_power_point.png")
-show_logo("icones/LOGO_MVVS_COLOR.png")
 
 # 🔐 Controle de sessão
 if "logado" not in st.session_state:
@@ -111,21 +89,17 @@ if not st.session_state.logado:
 # 👤 Página após login
 else:
     dados = usuarios[st.session_state.usuario]
-    cargo = dados["cargo"]
     nome = dados["nome"]
+    cargo = dados["cargo"]
 
-    col1, col2 = st.columns([1, 3])
-    with col1:
-        exibir_foto(f"icones/{dados['foto']}")
-        st.success(f"✅ Bem-vindo, {nome}!")
+    # 📁 Menu lateral com foto e boas-vindas
+    exibir_foto(f"icones/{dados['foto']}")
+    st.sidebar.markdown(f"### 👋 Bem-vindo, {nome}!")
+    st.sidebar.markdown(f"**Cargo:** {cargo}")
+    st.sidebar.markdown(f"**Admissão:** {dados['admissao']}")
+    st.sidebar.markdown(f"**Funcionários:** {dados['funcionarios']}")
 
-    with col2:
-        st.markdown(f"**Nome:** {nome}")
-        st.markdown(f"**Cargo:** {cargo}")
-        st.markdown(f"**Data de Admissão:** {dados['admissao']}")
-        st.markdown(f"**Funcionários Abaixo:** {dados['funcionarios']}")
-
-    # 📁 Menu lateral sempre visível
+    st.sidebar.markdown("---")
     st.sidebar.markdown("## 📁 Relatórios Disponíveis")
 
     relatorios = {
@@ -146,7 +120,7 @@ else:
             "💸 Desconto de revisita": "Desconto de revisita",
             "🏢 Faturamento MDU": "Faturamento MDU",
             "🛒 Faturamento Vendas": "Faturamento Vendas"
-            } if cargo in ["CEO", "GERENTE", "COORDENADOR"] else {},
+        },
         "⚙️ Processos Operacionais": {
             "📝 Realizar IVM": "Realizar IVM",
             "🚨 Processo disciplinar": "Processo disciplinar"
@@ -156,15 +130,12 @@ else:
     # 🔘 Lista única de opções
     opcoes = []
     for categoria, itens in relatorios.items():
-        if itens:
-            opcoes.append(f"— {categoria} —")
-            for label, chave in itens.items():
-                opcoes.append(label)
+        opcoes.append(f"— {categoria} —")
+        for label in itens:
+            opcoes.append(label)
 
-    # 🔘 Seleção única
     selecionado_label = st.sidebar.radio("Selecione o relatório:", opcoes)
 
-    # 🔍 Mapeia o item selecionado para a chave do relatório
     for categoria, itens in relatorios.items():
         if selecionado_label in itens:
             selecionado = itens[selecionado_label]
@@ -172,11 +143,11 @@ else:
     else:
         selecionado = "geral"
 
-    # 📈 Exibe o relatório correspondente
+    # 📈 Exibe o relatório
     st.markdown(f"### 📊 Relatório: {selecionado}")
     st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
 
-    # 🚪 Botão de logout
+    # 🚪 Logout
     st.sidebar.markdown("---")
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
