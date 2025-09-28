@@ -88,6 +88,19 @@ powerbi_links = {
 
 # 🎨 Fundo
 set_background("icones/Painel_power_point.png")
+st.markdown("""
+    <style>
+    .block-container {
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+        padding-left: 0rem;
+        padding-right: 0rem;
+    }
+    iframe {
+        width: 100% !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # 🔐 Controle de sessão
 if "logado" not in st.session_state:
@@ -233,3 +246,4 @@ else:
         st.experimental_rerun()
 
         
+
