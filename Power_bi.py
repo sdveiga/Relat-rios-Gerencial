@@ -191,8 +191,8 @@ if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
             </div>
         """, unsafe_allow_html=True)
 
-    else:
-        st.warning("⚠️ Relatório não encontrado ou link inválido.")    
+        else:
+            st.warning("⚠️ Relatório não encontrado ou link inválido.")    
 
     # 📋 Visão ICG
     elif selecionado_label == "📋 ICG":
@@ -255,6 +255,7 @@ if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
         st.experimental_rerun()
 
         
+
 
 
 
