@@ -166,32 +166,33 @@ else:
 
     # 📈 Exibe relatório Power BI
     if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
-        if selecionado and selecionado in powerbi_links:
-            st.markdown(f"### 📊 Relatório: {selecionado_label}")
-            st.markdown(f"""
-    <style>
-    .report-container {{
-        position: relative;
-        width: 100%;
-        height: 85vh;
-        margin-top: 20px;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }}
-    .report-iframe {{
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border: none;
-    }}
-    </style>
-    <div class="report-container">
-        <iframe class="report-iframe" src="{powerbi_links[selecionado]}"></iframe>
-    </div>
-""", unsafe_allow_html=True)
-        else:
-            st.warning("⚠️ Relatório não encontrado ou link inválido.")
+    if selecionado and selecionado in powerbi_links:
+        st.markdown(f"### 📊 Relatório: {selecionado_label}")
+
+        st.markdown(f"""
+            <style>
+            .report-container {{
+                width: 100%;
+                height: 85vh;
+                margin-top: 20px;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 0 15px rgba(0,0,0,0.6);
+            }}
+            iframe {{
+                width: 100%;
+                height: 100%;
+                border: none;
+                display: block;
+            }}
+            </style>
+            <div class="report-container">
+                <iframe src="{powerbi_links[selecionado]}"></iframe>
+            </div>
+        """, unsafe_allow_html=True)
+
+    else:
+        st.warning("⚠️ Relatório não encontrado ou link inválido.")
 
     # 📋 Visão ICG
     elif selecionado_label == "📋 ICG":
@@ -254,5 +255,6 @@ else:
         st.experimental_rerun()
 
         
+
 
 
