@@ -200,12 +200,26 @@ else:
                 "notas": notas
             })
 
+        st.markdown("#### 🧠 FCA — Fato, Causa e Ação")
+
+        fato = st.text_area("📝 Fato")
+        causa = st.text_area("🧪 Causa")
+        acao = st.text_area("✅ Ação")
+
+        st.markdown("#### 📎 Evidências")
+        evidencia = st.text_area("📌 Observações ou link de imagem")
+
+        if st.button("💾 Salvar Indicador"):
+            st.success("✅ Indicador registrado com sucesso!")
+            # Aqui podemos salvar os dados em session_state ou banco de dados futuramente
+
     # 🚪 Logout
     st.sidebar.markdown("---")
     if st.sidebar.button("🔒 Sair"):
         st.session_state.logado = False
         st.experimental_rerun()
         
+
 
 
 
