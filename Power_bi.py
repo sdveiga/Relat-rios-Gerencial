@@ -88,30 +88,6 @@ powerbi_links = {
 
 # 🎨 Fundo
 set_background("icones/Painel_power_point.png")
-st.markdown("""
-    <style>
-    .block-container {
-        padding: 0rem;
-    }
-    iframe {
-        width: 100% !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-    .block-container {
-        padding-top: 0rem;
-        padding-bottom: 0rem;
-        padding-left: 0rem;
-        padding-right: 0rem;
-    }
-    iframe {
-        width: 100% !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 # 🔐 Controle de sessão
 if "logado" not in st.session_state:
@@ -188,16 +164,13 @@ else:
             selecionado = itens[selecionado_label]
             break
 
-  
-    # 📈 Exibe relatório Power BI com opção de tela cheia
-if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
-    if selecionado and selecionado in powerbi_links:
-        st.markdown(f"### 📊 Relatório: {selecionado_label}")
-        fullscreen = st.checkbox("🖥️ Tela cheia")
-        altura = 1000 if fullscreen else 600
-        st.components.v1.iframe(powerbi_links[selecionado], height=altura, scrolling=True)
-    else:
-        st.warning("⚠️ Relatório não encontrado ou link inválido.")
+    # 📈 Exibe relatório Power BI
+    if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
+        if selecionado and selecionado in powerbi_links:
+            st.markdown(f"### 📊 Relatório: {selecionado_label}")
+            st.components.v1.iframe(powerbi_links[selecionado], height=600, scrolling=True)
+        else:
+            st.warning("⚠️ Relatório não encontrado ou link inválido.")
 
     # 📋 Visão ICG
     elif selecionado_label == "📋 ICG":
@@ -260,8 +233,3 @@ if selecionado_label not in ["📋 ICG", "🖥️ Apresentação ICG"]:
         st.experimental_rerun()
 
         
-
-
-
-
-
