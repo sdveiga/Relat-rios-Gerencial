@@ -82,7 +82,7 @@ powerbi_links = {
     "Faturamento MDU": "https://app.powerbi.com/view?r=eyJrIjoiFAT_MDU_ID",
     "Faturamento Vendas": "https://app.powerbi.com/view?r=eyJrIjoiFAT_VENDAS_ID",
     "Produção por equipe": "https://app.powerbi.com/view?r=eyJrIjoiPROD_EQUIPE_ID",
-    "Realizar IVM": "https://app.powerbi.com/view?r=eyJrIjoiIVM_ID",
+    "Realizar IVM": "https://forms.office.com/Pages/DesignPageV2.aspx?prevorigin=shell&origin=NeoPortalPage&subpage=design&id=FBeP9KVigUy7Xyv6Gw9Lge-7ASfsVxxHq5qjvb_T5P1UQlNPOFNCMFY4OFpCSVY2WlRNQVQ5VkhMRS4u&analysis=false&topview=Preview",
     "Processo disciplinar": "https://app.powerbi.com/view?r=eyJrIjoiDISCIPLINAR_ID"
 }
 
@@ -233,3 +233,4 @@ else:
         st.experimental_rerun()
 
         
+
