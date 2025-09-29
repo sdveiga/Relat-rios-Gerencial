@@ -68,8 +68,8 @@ usuarios = {
         "foto": "gerente.png", "admissao": "01/07/2008", "funcionarios": 360
     },
     "William.Sales": {
-        "senha": "123456789", "cargo": "TECNICO", "nome": "Carlos Silva",
-        "foto": "padrao.png", "admissao": "15/03/2020", "funcionarios": 0
+        "senha": "123456789", "cargo": "COORDENADOR", "nome": "William Lamarão Sales",
+        "foto": "William.png", "admissao": "15/03/2020", "funcionarios": 0
     }
 }
 
@@ -241,6 +241,7 @@ else:
         st.experimental_rerun()
 
         
+
 
 
 
