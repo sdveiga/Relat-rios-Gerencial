@@ -66,7 +66,11 @@ usuarios = {
     "sdveiga": {
         "senha": "Samu@3887", "cargo": "GERENTE", "nome": "Samuel David Veiga",
         "foto": "gerente.png", "admissao": "01/07/2008", "funcionarios": 360
-    }    
+    },
+    "William.Sales": {
+        "senha": "123456789", "cargo": "TECNICO", "nome": "Carlos Silva",
+        "foto": "padrao.png", "admissao": "15/03/2020", "funcionarios": 0
+    }
 }
 
 # 🔗 Relatórios Power BI simulados
@@ -237,6 +241,7 @@ else:
         st.experimental_rerun()
 
         
+
 
 
 
