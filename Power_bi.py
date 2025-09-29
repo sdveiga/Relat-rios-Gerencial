@@ -68,8 +68,16 @@ usuarios = {
         "foto": "gerente.png", "admissao": "01/07/2008", "funcionarios": 360
     },
     "William.Sales": {
-        "senha": "123456789", "cargo": "COORDENADOR", "nome": "William Lamarão Sales",
+        "senha": "Vandeco24", "cargo": "COORDENADOR", "nome": "William Lamarão Sales",
         "foto": "William.png", "admissao": "15/03/2020", "funcionarios": 0
+    },
+    "Anderson.Marques": {
+        "senha": "Mvvs.2025", "cargo": "COORDENADOR", "nome": "Anderson Luiz de Souza Marques",
+        "foto": "Anderson.png", "admissao": "15/03/2020", "funcionarios": 0
+    },
+    "Carlos.Eduardo": {
+        "senha": "Mvvs.2025", "cargo": "COORDENADOR", "nome": "Carlos Eduardo de Oliveira Assumpção",
+        "foto": "Carlos.png", "admissao": "15/03/2020", "funcionarios": 0
     }
 }
 
@@ -241,6 +249,7 @@ else:
         st.experimental_rerun()
 
         
+
 
 
 
